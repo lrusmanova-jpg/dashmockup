@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpinMama · Engagement UI Dashboard v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F0EB;--bg2:#E8E5DE;--bg3:#DEDAD1;--panel:#FFFFFF;
+  --ink:#1C1A16;--ink2:#4C4840;--ink3:#9C9890;--rule:rgba(28,26,22,.08);
+  --red:#C4341A;--green:#1A7A4A;--amber:#C47D0A;--blue:#1A4A8C;--teal:#1A7A74;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Archivo Narrow',sans-serif;background:var(--bg);color:var(--ink);font-size:13px;}
+
+/* TOPBAR */
+.topbar{background:var(--ink);height:44px;display:flex;align-items:center;padding:0 20px;position:sticky;top:0;z-index:100;}
+.logo{font-weight:700;font-size:15px;color:#F2F0EB;margin-right:28px;}
+.logo span{color:var(--red);}
+.tabs{display:flex;height:100%;}
+.tab{height:100%;padding:0 15px;display:flex;align-items:center;font-size:11px;font-weight:500;color:rgba(242,240,235,.4);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:.15s;}
+.tab:hover{color:rgba(242,240,235,.75);}
+.tab.active{color:#F2F0EB;border-bottom-color:var(--red);}
+.tr{margin-left:auto;display:flex;gap:6px;align-items:center;}
+.chip{padding:3px 9px;border:1px solid rgba(242,240,235,.2);border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(242,240,235,.5);cursor:pointer;}
+.chip.on{color:#F2F0EB;border-color:rgba(242,240,235,.4);}
+
+/* FILTERBAR */
+.fb{background:var(--bg2);border-bottom:1px solid var(--rule);padding:7px 20px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.flbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);}
+.fsel{padding:4px 8px;background:var(--panel);border:1px solid var(--rule);border-radius:2px;font-family:'Archivo Narrow',sans-serif;font-size:11px;color:var(--ink2);outline:none;cursor:pointer;}
+.fsep{width:1px;height:18px;background:var(--rule);margin:0 2px;}
+.gbtn-wrap{display:flex;border:1px solid var(--rule);border-radius:2px;overflow:hidden;}
+.gbtn{padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--panel);color:var(--ink3);cursor:pointer;border-right:1px solid var(--rule);transition:.15s;}
+.gbtn:last-child{border-right:none;}
+.gbtn.active{background:var(--ink);color:#F2F0EB;}
+
+/* MAIN */
+.main{padding:14px 20px 48px;}
+.sheet{display:none;}
+.sheet.active{display:block;animation:fu .2s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+.slbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.slbl::after{content:'';flex:1;height:1px;background:var(--rule);}
+
+/* KPI CARDS */
+.krow{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px;}
+.kpi{background:var(--panel);border:1px solid var(--rule);padding:12px 14px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--stripe,var(--rule));}
+.kpi.ns{background:var(--ink);border-color:var(--ink);}
+.kl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;}
+.ns .kl{color:rgba(242,240,235,.4);}
+.kv{font-weight:700;font-size:26px;line-height:1;color:var(--ink);letter-spacing:-.5px;}
+.ns .kv{color:#F2F0EB;font-size:34px;}
+.kd{font-size:11px;font-weight:500;margin-top:3px;}
+.up{color:var(--green);}.dn{color:var(--red);}.nt{color:var(--ink3);}
+.ks{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ink3);margin-top:2px;}
+.ns .ks{color:rgba(242,240,235,.3);}
+
+/* PANELS */
+.pr{display:grid;gap:8px;margin-bottom:10px;}
+.g2{grid-template-columns:1fr 1fr;}
+.g3{grid-template-columns:1fr 1fr 1fr;}
+.g21{grid-template-columns:2fr 1fr;}
+.g12{grid-template-columns:1fr 2fr;}
+.panel{background:var(--panel);border:1px solid var(--rule);}
+.ph{padding:9px 13px;border-bottom:1px solid var(--rule);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;}
+.pt{font-weight:600;font-size:12px;color:var(--ink);}
+.pm{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);}
+.pb{padding:13px;}
+.pb0{padding:0;}
+
+/* LEGEND ROW */
+.leg{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;}
+.li{display:flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);cursor:pointer;user-select:none;}
+.li-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.li.dim{opacity:.3;}
+
+/* TABLE */
+.dt{width:100%;border-collapse:collapse;font-size:12px;}
+.dt th{text-align:left;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.3px;text-transform:uppercase;color:var(--ink3);padding:6px 10px;border-bottom:2px solid var(--ink);background:var(--bg2);white-space:nowrap;cursor:pointer;}
+.dt th:hover{color:var(--blue);}
+.dt td{padding:7px 10px;border-bottom:1px solid var(--rule);color:var(--ink2);vertical-align:middle;}
+.dt tr:hover td{background:var(--bg);cursor:pointer;}
+.dt tr.sel td{background:rgba(26,74,140,.05);border-left:3px solid var(--blue);}
+.dt td.s{color:var(--ink);font-weight:600;}
+.bc{display:flex;align-items:center;gap:5px;}
+.bt{flex:1;height:4px;background:var(--bg2);border-radius:1px;overflow:hidden;min-width:40px;}
+.bf{height:100%;border-radius:1px;}
+.bv{font-size:11px;white-space:nowrap;min-width:34px;}
+.heat{display:inline-block;padding:2px 6px;border-radius:1px;font-family:'JetBrains Mono',monospace;font-size:9px;}
+.hh{background:rgba(26,122,74,.12);color:var(--green);}
+.hm{background:rgba(26,122,74,.07);color:#2a9a5e;}
+.mm{background:rgba(196,125,10,.10);color:var(--amber);}
+.ll{background:rgba(196,52,26,.10);color:var(--red);}
+.tbadge{display:inline-block;padding:1px 5px;border-radius:1px;font-family:'JetBrains Mono',monospace;font-size:8px;background:var(--bg2);color:var(--ink3);border:1px solid var(--rule);}
+.dp{color:var(--green);font-size:10px;font-weight:600;}
+.dn2{color:var(--red);font-size:10px;font-weight:600;}
+
+/* DETAIL EXPAND */
+.det-section{margin-bottom:10px;}
+.det-lbl-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.det-name{font-size:13px;font-weight:600;color:var(--blue);}
+.det-close{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);cursor:pointer;padding:2px 7px;border:1px solid var(--rule);border-radius:2px;}
+.det-close:hover{background:var(--bg2);}
+
+/* FUNNEL */
+.fwrap{display:flex;flex-direction:column;gap:2px;}
+.fstep{display:grid;grid-template-columns:155px 1fr 72px 62px 62px;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(28,26,22,.04);}
+.fstep:last-child{border-bottom:none;}
+.fsn{font-size:11px;font-weight:600;color:var(--ink);}
+.fse{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ink3);}
+.fbw{height:19px;background:var(--bg2);border-radius:1px;overflow:hidden;}
+.fbr{height:100%;border-radius:1px;display:flex;align-items:center;padding-left:6px;}
+.fbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);white-space:nowrap;}
+.fn{font-weight:700;font-size:12px;text-align:right;color:var(--ink);}
+.fcr{font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right;}
+.fdrop{font-family:'JetBrains Mono',monospace;font-size:10px;text-align:right;color:var(--red);}
+
+/* EL SELECTOR */
+.el-btn{padding:8px 12px;background:var(--panel);border:1px solid var(--rule);cursor:pointer;font-size:11px;font-weight:500;color:var(--ink2);transition:.15s;border-radius:2px;text-align:left;}
+.el-btn:hover{background:var(--bg2);}
+.el-btn.active{background:var(--ink);color:#F2F0EB;border-color:var(--ink);}
+.el-btn-type{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ink3);margin-top:1px;}
+.el-btn.active .el-btn-type{color:rgba(242,240,235,.4);}
+
+/* FOLD COMPARE */
+.fc2{display:grid;grid-template-columns:1fr 1fr;}
+.fcs{padding:12px 14px;}
+.fcs:first-child{border-right:1px solid var(--rule);}
+.fct{font-weight:600;font-size:11px;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.fcd{width:7px;height:7px;border-radius:50%;}
+.fcm{display:flex;flex-direction:column;gap:6px;}
+.fcmr{display:flex;justify-content:space-between;align-items:center;}
+.fcmn{font-size:11px;color:var(--ink2);}
+.fcmv{font-weight:700;font-size:13px;color:var(--ink);}
+
+/* chart canvas wrapper */
+canvas{display:block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">SM <span>·</span> Engagement UI Dashboard</div>
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-sh="s1">Общие показатели</div>
+    <div class="tab" data-sh="s2">UI Elements Performance</div>
+    <div class="tab" data-sh="s3">Funnel by UI Element</div>
+
+  </div>
+  <div class="tr">
+    <div class="chip on">Янв–Мар 2026 · 90д</div>
+    <div class="chip">↓ CSV</div>
+  </div>
+</div>
+
+<div class="fb">
+  <span class="flbl">Фильтры</span>
+  <select class="fsel"><option>Все GEO</option><option>RU</option><option>UA</option><option>KZ</option><option>DE</option></select>
+  <select class="fsel"><option>Все устройства</option><option>Desktop</option><option>Mobile</option><option>Tablet</option></select>
+  <select class="fsel"><option>New + Returning</option><option>New users</option><option>Returning</option></select>
+  <select class="fsel"><option>Все позиции</option><option>Above fold</option><option>Below fold</option></select>
+  <select class="fsel"><option>Sticky + Static</option><option>Sticky</option><option>Static</option></select>
+  <div class="fsep"></div>
+  <span class="flbl">Период</span>
+  <div class="gbtn-wrap" id="gran">
+    <div class="gbtn" data-g="day">День</div>
+    <div class="gbtn active" data-g="week">Неделя</div>
+    <div class="gbtn" data-g="month">Месяц</div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════
+     SHEET 1
+══════════════════════════════════ -->
+<div class="sheet active" id="s1">
+  <div class="slbl">KPI · текущие значения и дельта к предыдущему периоду</div>
+  <div class="krow">
+    <div class="kpi ns">
+      <div class="kl">North Star · Deposit Intent Rate</div>
+      <div class="kv">6.8%</div>
+      <div class="kd up">↑ +0.9pp vs пред. период</div>
+      <div class="ks">unique deposit_intent / unique impressions</div>
+    </div>
+    <div class="kpi" style="--stripe:var(--blue)">
+      <div class="kl">CTR</div><div class="kv">11.4%</div>
+      <div class="kd up">↑ +1.2pp</div><div class="ks">клики / impressions (uniq)</div>
+    </div>
+    <div class="kpi" style="--stripe:var(--teal)">
+      <div class="kl">Reg Start CR</div><div class="kv">34.2%</div>
+      <div class="kd dn">↓ −0.4pp</div><div class="ks">click → reg start</div>
+    </div>
+    <div class="kpi" style="--stripe:var(--green)">
+      <div class="kl">Reg Complete CR</div><div class="kv">28.7%</div>
+      <div class="kd up">↑ +0.6pp</div><div class="ks">click → reg complete</div>
+    </div>
+    <div class="kpi" style="--stripe:var(--amber)">
+      <div class="kl">First Game CR</div><div class="kv">71.3%</div>
+      <div class="kd nt">→ stable</div><div class="ks">reg complete → game</div>
+    </div>
+    <div class="kpi" style="--stripe:var(--ink3)">
+      <div class="kl">Median Click→Intent</div><div class="kv">11м</div>
+      <div class="kd up">↓ −2м 30с</div><div class="ks">медиана · атрибутир. юзеры</div>
+    </div>
+  </div>
+
+  <div class="slbl">Динамика метрик воронки · 90 дней · можно наложить несколько метрик</div>
+
+  <!-- overlay chart -->
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="ph">
+      <div class="pt">Все метрики на одном графике</div>
+      <div class="pm">клик по легенде — вкл/выкл линию</div>
+    </div>
+    <div class="pb">
+      <canvas id="c-overlay" height="180"></canvas>
+      <div class="leg" id="leg-overlay"></div>
+    </div>
+  </div>
+
+  <!-- individual charts 2x3 -->
+  <div class="pr g3" style="margin-bottom:10px;">
+    <div class="panel"><div class="ph"><div class="pt">Deposit Intent Rate</div><div class="pm">North Star</div></div>
+      <div class="pb"><canvas id="c-dir" height="130"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">CTR</div></div>
+      <div class="pb"><canvas id="c-ctr" height="130"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">Registration Complete CR</div></div>
+      <div class="pb"><canvas id="c-reg" height="130"></canvas></div></div>
+  </div>
+  <div class="pr g3">
+    <div class="panel"><div class="ph"><div class="pt">First Game Start CR</div></div>
+      <div class="pb"><canvas id="c-game" height="130"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">Reg Drop-off</div></div>
+      <div class="pb"><canvas id="c-rdrop" height="130"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">Median Click→Intent · мин</div></div>
+      <div class="pb"><canvas id="c-time" height="130"></canvas></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SHEET 2
+══════════════════════════════════ -->
+<div class="sheet" id="s2">
+  <div class="slbl">UI Elements · таблица · клик по строке раскрывает динамику</div>
+  <div class="panel" style="margin-bottom:10px;">
+    <div class="ph"><div class="pt">UI Elements Performance</div><div class="pm">сортировка по Contribution % · 7 элементов</div></div>
+    <div class="pb0">
+      <table class="dt" id="el-tbl">
+        <thead><tr>
+          <th>UI Element</th><th>Тип</th><th>Impressions</th>
+          <th>CTR</th><th>Reg Complete CR</th><th>Deposit Intent CR</th>
+          <th>Contribution %</th><th>Δ vs avg</th>
+        </tr></thead>
+        <tbody id="el-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- detail block — hidden until row click -->
+  <div id="det-block" style="display:none;">
+    <div class="det-lbl-row">
+      <div class="slbl" style="margin-bottom:0;flex:1;">Динамика элемента</div>
+      <div class="det-name" id="det-name"></div>
+      <div class="det-close" id="det-close">✕ закрыть</div>
+    </div>
+    <div class="pr g3" style="margin-bottom:8px;">
+      <div class="panel"><div class="ph"><div class="pt">CTR · динамика</div></div><div class="pb"><canvas id="d-ctr" height="120"></canvas></div></div>
+      <div class="panel"><div class="ph"><div class="pt">Reg Complete CR · динамика</div></div><div class="pb"><canvas id="d-reg" height="120"></canvas></div></div>
+      <div class="panel"><div class="ph"><div class="pt">Deposit Intent CR · динамика</div></div><div class="pb"><canvas id="d-int" height="120"></canvas></div></div>
+    </div>
+    <div class="pr g2">
+      <div class="panel"><div class="ph"><div class="pt">Impressions · динамика</div></div><div class="pb"><canvas id="d-imp" height="110"></canvas></div></div>
+      <div class="panel"><div class="ph"><div class="pt">Contribution % · динамика</div></div><div class="pb"><canvas id="d-cnt" height="110"></canvas></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     SHEET 3
+══════════════════════════════════ -->
+<div class="sheet" id="s3">
+  <div class="slbl">Funnel by UI Element · выберите элемент</div>
+  <div class="pr g21" style="margin-bottom:10px;">
+    <div style="display:flex;flex-direction:column;gap:6px;" id="el-sel"></div>
+    <div class="panel" id="fd-panel">
+      <div class="ph"><div class="pt" id="fd-title">Выберите элемент →</div><div class="pm">воронка · снапшот</div></div>
+      <div class="pb" id="fd-body"><p style="color:var(--ink3);font-size:12px;padding:16px 0;">Выберите элемент слева</p></div>
+    </div>
+  </div>
+
+  <div class="slbl">Динамика CR по шагам воронки · <span id="s3name" style="color:var(--blue)">выберите элемент</span></div>
+  <div class="pr g3" style="margin-bottom:8px;">
+    <div class="panel"><div class="ph"><div class="pt">Impression → Click (CTR)</div></div><div class="pb"><canvas id="sc1" height="120"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">Click → Reg Start</div></div><div class="pb"><canvas id="sc2" height="120"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">Reg Start → Reg Complete</div></div><div class="pb"><canvas id="sc3" height="120"></canvas></div></div>
+  </div>
+  <div class="pr g3">
+    <div class="panel"><div class="ph"><div class="pt">Reg Complete → Game Start</div></div><div class="pb"><canvas id="sc4" height="120"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">Game Start → Deposit Intent</div></div><div class="pb"><canvas id="sc5" height="120"></canvas></div></div>
+    <div class="panel"><div class="ph"><div class="pt">Click → Deposit Intent CR</div><div class="pm">сквозная</div></div><div class="pb"><canvas id="sc6" height="120"></canvas></div></div>
+  </div>
+</div>
+
+<div class="sheet" id="s4" style="display:none!important">
+  <div class="slbl">Above Fold vs Below Fold · снапшот</div>
+  <div class="pr g2" style="margin-bottom:10px;">
+    <div class="panel">
+      <div class="ph"><div class="pt">Above vs Below Fold</div><div class="pm">текущие метрики</div></div>
+      <div class="pb0">
+        <div class="fc2" style="border-top:1px solid var(--rule);">
+          <div class="fcs">
+            <div class="fct"><div class="fcd" style="background:var(--blue)"></div>Above Fold</div>
+            <div class="fcm">
+              <div class="fcmr"><span class="fcmn">Impressions</span><span class="fcmv">198 400</span></div>
+              <div class="fcmr"><span class="fcmn">CTR</span><span><span class="fcmv">14.2%</span> <span class="dp">+4.2pp</span></span></div>
+              <div class="fcmr"><span class="fcmn">Reg Complete CR</span><span><span class="fcmv">31.4%</span> <span class="dp">+5.8pp</span></span></div>
+              <div class="fcmr"><span class="fcmn">Deposit Intent CR</span><span><span class="fcmv">8.1%</span> <span class="dp">+2.9pp</span></span></div>
+            </div>
+          </div>
+          <div class="fcs">
+            <div class="fct"><div class="fcd" style="background:var(--ink3)"></div>Below Fold</div>
+            <div class="fcm">
+              <div class="fcmr"><span class="fcmn">Impressions</span><span class="fcmv">73 000</span></div>
+              <div class="fcmr"><span class="fcmn">CTR</span><span><span class="fcmv">10.0%</span> <span class="dn2">−4.2pp</span></span></div>
+              <div class="fcmr"><span class="fcmn">Reg Complete CR</span><span><span class="fcmv">25.6%</span> <span class="dn2">−5.8pp</span></span></div>
+              <div class="fcmr"><span class="fcmn">Deposit Intent CR</span><span><span class="fcmv">5.2%</span> <span class="dn2">−2.9pp</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><div class="pt">Sticky vs Static · метрики</div></div>
+      <div class="pb0">
+        <table class="dt">
+          <thead><tr><th>Элемент</th><th>Тип</th><th>CTR</th><th>Reg CR</th><th>Intent CR</th></tr></thead>
+          <tbody>
+            <tr><td class="s">Sticky CTA</td><td><span class="tbadge">sticky</span></td><td><div class="bc"><div class="bt"><div class="bf" style="width:76%;background:var(--blue)"></div></div><span class="bv">19.1%</span></div></td><td><span class="heat hh">36.2%</span></td><td>9.4%</td></tr>
+            <tr><td class="s">CTA Sign Up</td><td><span class="tbadge">static</span></td><td><div class="bc"><div class="bt"><div class="bf" style="width:62%;background:var(--teal)"></div></div><span class="bv">15.5%</span></div></td><td><span class="heat hh">38.1%</span></td><td>9.9%</td></tr>
+            <tr><td class="s">Hero Banner</td><td><span class="tbadge">static</span></td><td><div class="bc"><div class="bt"><div class="bf" style="width:44%;background:var(--teal)"></div></div><span class="bv">11.0%</span></div></td><td><span class="heat hm">29.4%</span></td><td>7.6%</td></tr>
+            <tr><td class="s">Promo Block</td><td><span class="tbadge">static</span></td><td><div class="bc"><div class="bt"><div class="bf" style="width:38%;background:var(--amber)"></div></div><span class="bv">9.5%</span></div></td><td><span class="heat mm">24.7%</span></td><td>6.4%</td></tr>
+            <tr><td class="s">Game Tile</td><td><span class="tbadge">static</span></td><td><div class="bc"><div class="bt"><div class="bf" style="width:28%;background:var(--ink3)"></div></div><span class="bv">7.0%</span></div></td><td><span class="heat ll">18.3%</span></td><td>4.7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="slbl">Динамика разрыва Above vs Below fold · 90 дней</div>
+  <div class="pr g2" style="margin-bottom:10px;">
+    <div class="panel">
+      <div class="ph"><div class="pt">CTR · Above vs Below fold</div><div class="pm">недельная динамика</div></div>
+      <div class="pb">
+        <canvas id="f-ctr" height="150"></canvas>
+        <div class="leg">
+          <div class="li"><div class="li-dot" style="background:var(--blue)"></div>Above fold</div>
+          <div class="li"><div class="li-dot" style="background:var(--ink3)"></div>Below fold</div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><div class="pt">Reg Complete CR · Above vs Below fold</div><div class="pm">недельная динамика</div></div>
+      <div class="pb">
+        <canvas id="f-reg" height="150"></canvas>
+        <div class="leg">
+          <div class="li"><div class="li-dot" style="background:var(--blue)"></div>Above fold</div>
+          <div class="li"><div class="li-dot" style="background:var(--ink3)"></div>Below fold</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pr g2">
+    <div class="panel">
+      <div class="ph"><div class="pt">Deposit Intent CR · Sticky vs Static</div><div class="pm">недельная динамика</div></div>
+      <div class="pb">
+        <canvas id="f-sticky" height="140"></canvas>
+        <div class="leg">
+          <div class="li"><div class="li-dot" style="background:var(--red)"></div>Sticky</div>
+          <div class="li"><div class="li-dot" style="background:var(--ink3)"></div>Static</div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><div class="pt">Impressions · Above vs Below fold</div><div class="pm">охват по группам</div></div>
+      <div class="pb">
+        <canvas id="f-imp" height="140"></canvas>
+        <div class="leg">
+          <div class="li"><div class="li-dot" style="background:var(--blue)"></div>Above fold</div>
+          <div class="li"><div class="li-dot" style="background:var(--amber)"></div>Below fold</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ────────────────────────────────────────────
+// DATA
+// ────────────────────────────────────────────
+const W=13;
+const weeks=Array.from({length:W},(_,i)=>{
+  const d=new Date(2026,0,5+i*7);
+  return `${d.getDate()} ${['янв','фев','мар'][d.getMonth()]}`;
+});
+
+function rng(base,amp,n=W,seed=1){
+  let r=[];let s=seed;
+  for(let i=0;i<n;i++){s=(s*16807+0)%2147483647;r.push(+(base+amp*(Math.sin(i*.7+s*.001)+((s%100)/100-.5)*.8)).toFixed(2));}
+  return r;
+}
+
+const S={
+  dir:  rng(5.2,.9,W,3),
+  ctr:  rng(9.6,1.4,W,7),
+  reg:  rng(26.5,2.2,W,11),
+  game: rng(69,2.5,W,5),
+  rdrop:rng(19,2,W,9),
+  time: rng(14.5,2,W,13),
+};
+S.dir[W-1]=6.8;S.ctr[W-1]=11.4;S.reg[W-1]=28.7;S.game[W-1]=71.3;S.rdrop[W-1]=16.1;S.time[W-1]=11;
+
+const ELS=[
+  {id:'home_cta_signup_above_v1',  name:'CTA Sign Up',      type:'primary_cta', imp:42700,ctr:15.5,regCr:38.1,iCr:9.9, co:22.8,fold:'above'},
+  {id:'home_hero_banner_above_v2', name:'Hero Banner',       type:'hero_banner',  imp:73100,ctr:11.0,regCr:29.4,iCr:7.6, co:31.4,fold:'above'},
+  {id:'global_sticky_cta_top',     name:'Sticky CTA',        type:'sticky_cta',   imp:31200,ctr:19.1,regCr:36.2,iCr:9.4, co:17.6,fold:'above'},
+  {id:'lobby_promo_block_below',   name:'Promo Block',       type:'promo_block',  imp:48800,ctr:9.5, regCr:24.7,iCr:6.4, co:14.3,fold:'below'},
+  {id:'home_popup_welcome',        name:'Welcome Pop-up',    type:'popup_modal',  imp:21400,ctr:28.3,regCr:41.2,iCr:10.8,co:8.9, fold:'above'},
+  {id:'lobby_widget_topgames',     name:'Widget Top Games',  type:'widget',       imp:10500,ctr:6.2, regCr:15.4,iCr:4.1, co:3.4, fold:'below'},
+  {id:'lobby_gametile_below',      name:'Game Tile',         type:'game_tile',    imp:4800, ctr:7.0, regCr:18.3,iCr:4.7, co:1.6, fold:'below'},
+];
+const avgICr=ELS.reduce((s,e)=>s+e.iCr,0)/ELS.length;
+const EL_COLORS=['#1A4A8C','#C4341A','#1A7A74','#C47D0A','#1A7A4A','#9C9890','#6A3A8C'];
+
+// ────────────────────────────────────────────
+// CHART ENGINE
+// ────────────────────────────────────────────
+const CC={red:'#C4341A',green:'#1A7A4A',amber:'#C47D0A',blue:'#1A4A8C',teal:'#1A7A74',gray:'#9C9890'};
+
+function drawChart(id, datasets, labels, opts={}){
+  const cv=document.getElementById(id);
+  if(!cv)return;
+  // ensure canvas fills container
+  cv.width=cv.parentElement.clientWidth||400;
+  const ctx=cv.getContext('2d');
+  const CW=cv.width, CH=cv.height;
+  ctx.clearRect(0,0,CW,CH);
+
+  const pad={t:14,r:12,b:24,l:42};
+  const cw=CW-pad.l-pad.r, ch=CH-pad.t-pad.b;
+
+  const allV=datasets.filter(d=>!d.hidden).flatMap(d=>d.data);
+  if(!allV.length)return;
+  const mn=opts.min!==undefined?opts.min:Math.min(...allV)*0.92;
+  const mx=opts.max!==undefined?opts.max:Math.max(...allV)*1.06;
+  const rng2=mx-mn||1;
+
+  const px=i=>pad.l+i/(labels.length-1)*cw;
+  const py=v=>pad.t+ch-(v-mn)/rng2*ch;
+
+  // grid
+  ctx.strokeStyle='rgba(28,26,22,.06)';ctx.lineWidth=1;
+  for(let t=0;t<=4;t++){
+    const y=pad.t+ch/4*t;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+cw,y);ctx.stroke();
+    const val=mx-rng2/4*t;
+    ctx.fillStyle='#9C9890';ctx.font='7px JetBrains Mono';ctx.textAlign='right';
+    const s=opts.pct?val.toFixed(1)+'%':val.toFixed(opts.dec||1)+(opts.sfx||'');
+    ctx.fillText(s,pad.l-3,y+3);
+  }
+
+  // x labels
+  const step=Math.max(1,Math.floor(labels.length/6));
+  ctx.fillStyle='#9C9890';ctx.font='7px JetBrains Mono';ctx.textAlign='center';
+  labels.forEach((l,i)=>{if(i%step===0||i===labels.length-1)ctx.fillText(l,px(i),CH-3);});
+
+  // axes
+  ctx.strokeStyle='rgba(28,26,22,.12)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+ch);ctx.lineTo(pad.l+cw,pad.t+ch);ctx.stroke();
+
+  // datasets
+  datasets.forEach(ds=>{
+    if(ds.hidden)return;
+    const col=ds.color;
+    // area fill
+    if(ds.fill){
+      ctx.beginPath();
+      ctx.moveTo(px(0),py(ds.data[0]));
+      ds.data.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py(v));});
+      ctx.lineTo(px(ds.data.length-1),pad.t+ch);
+      ctx.lineTo(px(0),pad.t+ch);
+      ctx.closePath();
+      ctx.fillStyle=col+'22';
+      ctx.fill();
+    }
+    // line
+    ctx.beginPath();
+    ctx.strokeStyle=col;ctx.lineWidth=ds.width||2;
+    if(ds.dash)ctx.setLineDash(ds.dash); else ctx.setLineDash([]);
+    ds.data.forEach((v,i)=>{i===0?ctx.moveTo(px(i),py(v)):ctx.lineTo(px(i),py(v));});
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // last dot
+    const lx=px(ds.data.length-1),ly=py(ds.data[ds.data.length-1]);
+    ctx.beginPath();ctx.arc(lx,ly,3.5,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();
+    // last label
+    ctx.fillStyle=col;ctx.font='bold 8px JetBrains Mono';ctx.textAlign='left';
+    const lv=ds.data[ds.data.length-1];
+    const ls=opts.pct?lv.toFixed(1)+'%':lv.toFixed(opts.dec||1)+(opts.sfx||'');
+    ctx.fillText(ls,lx+5,ly+3);
+  });
+}
+
+// ────────────────────────────────────────────
+// SHEET 1 — draw all charts
+// ────────────────────────────────────────────
+const overlayDS=[
+  {label:'DIR',    data:S.dir,  color:CC.red,   fill:true, pct:true},
+  {label:'CTR',    data:S.ctr,  color:CC.blue,  fill:false},
+  {label:'Reg CR', data:S.reg,  color:CC.teal,  fill:false},
+  {label:'Game CR',data:S.game, color:CC.green, fill:false},
+  {label:'Drop-off',data:S.rdrop,color:CC.amber,fill:false,dash:[4,3]},
+];
+
+function buildOverlayLegend(){
+  const wrap=document.getElementById('leg-overlay');
+  wrap.innerHTML='';
+  overlayDS.forEach((ds,i)=>{
+    const div=document.createElement('div');
+    div.className='li'+(ds.hidden?' dim':'');
+    div.innerHTML=`<div class="li-dot" style="background:${ds.color}"></div>${ds.label}`;
+    div.onclick=()=>{ds.hidden=!ds.hidden;div.classList.toggle('dim');drawChart('c-overlay',overlayDS,weeks,{pct:true});};
+    wrap.appendChild(div);
+  });
+}
+
+function drawAllS1(){
+  drawChart('c-overlay',overlayDS,weeks,{pct:true});
+  drawChart('c-dir',[{data:S.dir,color:CC.red,fill:true}],weeks,{pct:true});
+  drawChart('c-ctr',[{data:S.ctr,color:CC.blue,fill:true}],weeks,{pct:true});
+  drawChart('c-reg',[{data:S.reg,color:CC.teal,fill:true}],weeks,{pct:true});
+  drawChart('c-game',[{data:S.game,color:CC.green,fill:true}],weeks,{pct:true});
+  drawChart('c-rdrop',[{data:S.rdrop,color:CC.amber,fill:true}],weeks,{pct:true});
+  drawChart('c-time',[{data:S.time,color:CC.gray,fill:true}],weeks,{sfx:'м',dec:0});
+}
+
+// ────────────────────────────────────────────
+// SHEET 2 — element table
+// ────────────────────────────────────────────
+let selEl=null;
+
+function buildElTable(){
+  const tb=document.getElementById('el-tbody');
+  tb.innerHTML='';
+  const sorted=[...ELS].sort((a,b)=>b.co-a.co);
+  sorted.forEach((el,i)=>{
+    const d=el.iCr-avgICr;
+    const ds=(d>=0?'+':'')+d.toFixed(1)+'pp';
+    const dc=d>0.5?'dp':d<-0.5?'dn2':'';
+    let hc='ll';
+    if(el.iCr>=9)hc='hh';else if(el.iCr>=7)hc='hm';else if(el.iCr>=5.5)hc='mm';
+    const cPct=Math.round(el.ctr/30*100);
+    const rPct=Math.round(el.regCr/50*100);
+    const tr=document.createElement('tr');
+    tr.dataset.idx=ELS.indexOf(el);
+    tr.innerHTML=`
+      <td class="s" title="${el.id}">${el.name}</td>
+      <td><span class="tbadge">${el.type.replace(/_/g,' ')}</span></td>
+      <td style="font-size:11px">${el.imp.toLocaleString()}</td>
+      <td><div class="bc"><div class="bt"><div class="bf" style="width:${cPct}%;background:#1A4A8C"></div></div><span class="bv">${el.ctr}%</span></div></td>
+      <td><div class="bc"><div class="bt"><div class="bf" style="width:${rPct}%;background:#1A7A74"></div></div><span class="bv">${el.regCr}%</span></div></td>
+      <td><span class="heat ${hc}">${el.iCr}%</span></td>
+      <td>
+        <div style="height:12px;background:var(--bg2);border-radius:1px;overflow:hidden;margin-bottom:2px;">
+          <div style="height:100%;width:${el.co/35*100}%;background:#1A4A8C;border-radius:1px;"></div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3)">${el.co}%</span>
+      </td>
+      <td><span class="${dc}">${ds}</span></td>`;
+    tr.onclick=()=>openDetail(ELS.indexOf(el),tr);
+    tb.appendChild(tr);
+  });
+}
+
+function openDetail(idx,tr){
+  const el=ELS[idx];
+  if(selEl===idx){
+    // close
+    selEl=null;
+    tr.classList.remove('sel');
+    document.getElementById('det-block').style.display='none';
+    return;
+  }
+  selEl=idx;
+  document.querySelectorAll('#el-tbody tr').forEach(r=>r.classList.remove('sel'));
+  tr.classList.add('sel');
+  document.getElementById('det-name').textContent=el.name;
+  document.getElementById('det-block').style.display='block';
+
+  // generate el-specific series (seeded from idx)
+  const s=idx+1;
+  const ec=[{data:rng(el.ctr,2,W,s*3),color:EL_COLORS[idx],fill:true}];
+  const er=[{data:rng(el.regCr,3,W,s*5),color:'#1A7A74',fill:true}];
+  const ei=[{data:rng(el.iCr,1.5,W,s*7),color:'#C4341A',fill:true}];
+  const eimp=[{data:rng(el.imp/1000,el.imp*.03/1000,W,s*9).map(v=>+v.toFixed(1)),color:'#1A4A8C',fill:true}];
+  const eco=[{data:rng(el.co,3,W,s*11),color:'#C47D0A',fill:true}];
+
+  setTimeout(()=>{
+    drawChart('d-ctr',ec,weeks,{pct:true});
+    drawChart('d-reg',er,weeks,{pct:true});
+    drawChart('d-int',ei,weeks,{pct:true});
+    drawChart('d-imp',eimp,weeks,{sfx:'K',dec:1});
+    drawChart('d-cnt',eco,weeks,{pct:true});
+  },50);
+}
+
+document.getElementById('det-close').onclick=()=>{
+  selEl=null;
+  document.querySelectorAll('#el-tbody tr').forEach(r=>r.classList.remove('sel'));
+  document.getElementById('det-block').style.display='none';
+};
+
+// ────────────────────────────────────────────
+// SHEET 3 — funnel by element
+// ────────────────────────────────────────────
+let selS3=-1;
+
+function buildElSelector(){
+  const wrap=document.getElementById('el-sel');
+  wrap.innerHTML='';
+  ELS.forEach((el,i)=>{
+    const btn=document.createElement('div');
+    btn.className='el-btn';
+    btn.innerHTML=`<div>${el.name}</div><div class="el-btn-type">${el.id}</div>`;
+    btn.onclick=()=>selectS3(i,btn);
+    wrap.appendChild(btn);
+  });
+}
+
+function buildFunnelDetail(el){
+  const imp=el.imp;
+  const clicks=Math.round(imp*el.ctr/100);
+  const regS=Math.round(clicks*.34*(el.regCr/29));
+  const regC=Math.round(clicks*el.regCr/100);
+  const game=Math.round(regC*.71);
+  const intent=Math.round(clicks*el.iCr/100);
+  const steps=[
+    {name:'UI Impression',event:'ui_element_impression',n:imp,color:'#1A4A8C'},
+    {name:'UI Click',event:'ui_element_click',n:clicks,color:'#1A7A74'},
+    {name:'Reg Start',event:'registration_start',n:regS,color:'#1A7A4A'},
+    {name:'Reg Complete',event:'user_registered',n:regC,color:'#2a9a5e'},
+    {name:'First Game Start',event:'game_start',n:game,color:'#C47D0A'},
+    {name:'Deposit Intent ★',event:'deposit_intent',n:intent,color:'#C4341A'},
+  ];
+  let html='<div class="fwrap"><div style="display:grid;grid-template-columns:155px 1fr 72px 62px 62px;gap:8px;padding:4px 0 7px;border-bottom:1px solid var(--rule);font-family:JetBrains Mono,monospace;font-size:8px;color:var(--ink3)"><span>ЭТАП</span><span>ОБЪЁМ</span><span style="text-align:right">USERS</span><span style="text-align:right">CR</span><span style="text-align:right">DROP</span></div>';
+  steps.forEach((st,si)=>{
+    const pct=Math.max(2,(st.n/imp*100));
+    const cr=si===0?'—':((st.n/steps[si-1].n*100).toFixed(1)+'%');
+    const drop=si===0?'—':('−'+((1-st.n/steps[si-1].n)*100).toFixed(1)+'%');
+    html+=`<div class="fstep">
+      <div><div class="fsn">${st.name}</div><div class="fse">${st.event}</div></div>
+      <div class="fbw"><div class="fbr" style="width:${pct}%;background:${st.color}"><span class="fbl">${pct>8?pct.toFixed(1)+'%':''}</span></div></div>
+      <div class="fn">${st.n.toLocaleString()}</div>
+      <div class="fcr" style="color:${si===0?'var(--ink3)':'var(--green)'}">${cr}</div>
+      <div class="fdrop" style="color:${si===0?'var(--ink3)':'var(--red)'}">${drop}</div>
+    </div>`;
+  });
+  html+='</div>';
+  return html;
+}
+
+function selectS3(idx,btn){
+  selS3=idx;
+  document.querySelectorAll('#el-sel .el-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const el=ELS[idx];
+  document.getElementById('fd-title').textContent=el.name;
+  document.getElementById('fd-body').innerHTML=buildFunnelDetail(el);
+  document.getElementById('s3name').textContent=el.name;
+
+  // step charts
+  const s=idx+2;
+  setTimeout(()=>{
+    drawChart('sc1',[{data:rng(el.ctr,2,W,s),color:'#1A4A8C',fill:true}],weeks,{pct:true});
+    drawChart('sc2',[{data:rng(34,3,W,s+1),color:'#1A7A74',fill:true}],weeks,{pct:true});
+    drawChart('sc3',[{data:rng(el.regCr,3,W,s+2),color:'#1A7A4A',fill:true}],weeks,{pct:true});
+    drawChart('sc4',[{data:rng(71,3,W,s+3),color:'#C47D0A',fill:true}],weeks,{pct:true});
+    drawChart('sc5',[{data:rng(29,3,W,s+4),color:'#C4341A',fill:true}],weeks,{pct:true});
+    drawChart('sc6',[{data:rng(el.iCr,1.5,W,s+5),color:'#6A3A8C',fill:true}],weeks,{pct:true});
+  },50);
+}
+
+// ────────────────────────────────────────────
+// SHEET 4 charts
+// ────────────────────────────────────────────
+function drawS4(){
+  const aboveCTR=rng(13,1.2,W,21);const belowCTR=rng(9,1,W,23);
+  const aboveReg=rng(30,2,W,25);const belowReg=rng(24,2,W,27);
+  const stickyI=rng(9.2,1,W,31);const staticI=rng(7,1,W,33);
+  const aboveImp=rng(195,8,W,35);const belowImp=rng(71,5,W,37);
+
+  drawChart('f-ctr',[
+    {data:aboveCTR,color:'#1A4A8C',fill:false,label:'Above'},
+    {data:belowCTR,color:'#9C9890',fill:false,dash:[4,3]},
+  ],weeks,{pct:true});
+  drawChart('f-reg',[
+    {data:aboveReg,color:'#1A4A8C',fill:false},
+    {data:belowReg,color:'#9C9890',fill:false,dash:[4,3]},
+  ],weeks,{pct:true});
+  drawChart('f-sticky',[
+    {data:stickyI,color:'#C4341A',fill:false},
+    {data:staticI,color:'#9C9890',fill:false,dash:[4,3]},
+  ],weeks,{pct:true});
+  drawChart('f-imp',[
+    {data:aboveImp,color:'#1A4A8C',fill:true},
+    {data:belowImp,color:'#C47D0A',fill:false,dash:[3,2]},
+  ],weeks,{sfx:'K',dec:0});
+}
+
+// ────────────────────────────────────────────
+// TABS
+// ────────────────────────────────────────────
+document.getElementById('tabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');
+  if(!t)return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.sheet').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const sh=document.getElementById(t.dataset.sh);
+  sh.classList.add('active');
+  setTimeout(()=>{
+    if(t.dataset.sh==='s1')drawAllS1();
+    if(t.dataset.sh==='s2')buildElTable();
+    if(t.dataset.sh==='s4')drawS4();
+  },30);
+});
+
+// granularity
+document.getElementById('gran').addEventListener('click',e=>{
+  const b=e.target.closest('.gbtn');
+  if(!b)return;
+  document.querySelectorAll('.gbtn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  // redraw active sheet
+  const active=document.querySelector('.tab.active').dataset.sh;
+  if(active==='s1')drawAllS1();
+  if(active==='s4')drawS4();
+});
+
+// ────────────────────────────────────────────
+// INIT
+// ────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  buildOverlayLegend();
+  drawAllS1();
+  buildElTable();
+  buildElSelector();
+  drawS4();
+});
+window.addEventListener('resize',()=>{
+  const active=document.querySelector('.tab.active').dataset.sh;
+  if(active==='s1')drawAllS1();
+  if(active==='s4')drawS4();
+  if(active==='s2'&&selEl!==null){
+    setTimeout(()=>{
+      drawChart('d-ctr',[{data:rng(ELS[selEl].ctr,2,W,(selEl+1)*3),color:EL_COLORS[selEl],fill:true}],weeks,{pct:true});
+    },30);
+  }
+});
+</script>
+</body>
+</html>
