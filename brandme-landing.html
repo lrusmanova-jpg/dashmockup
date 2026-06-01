@@ -373,6 +373,8 @@
       font-weight: 700;
     }
 
+    .stat-item--pad { padding-left: 40px; }
+
     .stats-divider {
       width: 1px;
       background: var(--border);
@@ -659,19 +661,111 @@
     svg { display: block; }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 16px 24px; }
+    @media (max-width: 768px) {
+      /* NAVBAR */
+      nav { padding: 14px 20px; }
       .nav-links { display: none; }
-      .hero { padding: 40px 24px 0; flex-direction: column; }
-      .hero-right { width: 100%; height: 360px; }
-      .hero-left { max-width: 100%; }
-      .hero-title { font-size: 36px; }
-      .stats-section { padding: 24px; flex-wrap: wrap; gap: 20px; }
-      .stats-right { padding-left: 0; }
-      .results-section { padding: 0 24px 40px; }
-      .results-row { flex-direction: column; align-items: flex-start; }
-      .bottom-cta { margin: 0 24px 40px; padding: 32px 28px; flex-direction: column; gap: 28px; }
-      .cta-right { align-items: flex-start; }
+      .btn-outline { display: none; }
+
+      /* HERO */
+      .hero {
+        padding: 36px 20px 0;
+        flex-direction: column;
+        align-items: flex-start;
+        min-height: auto;
+        gap: 8px;
+      }
+      .hero-left { max-width: 100%; width: 100%; }
+      .hero-title { font-size: 34px; letter-spacing: -1px; }
+      .hero-subtitle { font-size: 15px; margin-bottom: 28px; }
+      .btn-hero { width: 100%; justify-content: center; }
+      .hero-badges { justify-content: center; }
+
+      .hero-right {
+        width: 100%;
+        height: 260px;
+        flex-shrink: 0;
+      }
+      .hero-figure { width: 220px; height: 240px; border-radius: 130px 130px 0 0; }
+
+      /* show only 1 tag, hide others to avoid overlap */
+      .tag-1 { top: 10px; right: 0; min-width: 150px; padding: 10px 12px; }
+      .tag-2 { display: none; }
+      .tag-3 { display: none; }
+      .progress-card { display: none; }
+
+      /* STATS */
+      .stats-section {
+        padding: 24px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .stat-item { padding: 0 !important; }
+      .stats-divider { display: none; }
+      .stats-right {
+        width: 100%;
+        padding-left: 0 !important;
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+        gap: 24px;
+      }
+
+      /* RESULTS */
+      .results-section { padding: 0 20px 40px; }
+      .results-row { flex-direction: column; align-items: flex-start; gap: 14px; padding: 20px 0; }
+      .row-label { min-width: unset; font-size: 15px; }
+
+      /* archetypes: horizontal scroll */
+      .archetypes-list {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+        gap: 12px;
+      }
+      .archetypes-list::-webkit-scrollbar { height: 3px; }
+      .archetypes-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+      .archetype-item { min-width: 68px; flex-shrink: 0; }
+      .arch-nav { display: none; }
+
+      /* strategy: 2×2 grid */
+      .strategy-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        width: 100%;
+      }
+      .strategy-item { min-width: unset; }
+
+      /* bug */
+      .bug-content { flex-direction: column; width: 100%; gap: 14px; }
+      .superpower { min-width: unset; width: 100%; }
+
+      /* BOTTOM CTA */
+      .bottom-cta {
+        margin: 0 20px 40px;
+        padding: 28px 24px;
+        flex-direction: column;
+        gap: 24px;
+        border-radius: 18px;
+      }
+      .cta-title { font-size: 26px; }
+      .cta-right { align-items: flex-start; width: 100%; }
+      .btn-cta { width: 100%; justify-content: center; }
+      .cta-badges { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 12px 16px; }
+      .logo { font-size: 19px; }
+      .btn-primary { padding: 9px 16px; font-size: 13px; }
+      .hero { padding: 28px 16px 0; }
+      .hero-title { font-size: 28px; }
+      .results-section { padding: 0 16px 32px; }
+      .stats-section { padding: 20px 16px; }
+      .bottom-cta { margin: 0 16px 32px; }
     }
   </style>
 </head>
@@ -809,7 +903,7 @@
 
   <div class="stats-divider"></div>
 
-  <div class="stat-item" style="padding-left:40px;">
+  <div class="stat-item stat-item--pad">
     <div class="stat-icon" style="background:#FFF7ED;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -824,7 +918,7 @@
 
   <div class="stats-divider"></div>
 
-  <div class="stat-item" style="padding-left:40px;">
+  <div class="stat-item stat-item--pad">
     <div class="stat-icon" style="background:#F0FDF4;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
