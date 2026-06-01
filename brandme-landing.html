@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brandme — Найди свою роль в новой экономике</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #5B4FE8;
+      --purple-light: #7B6FF0;
+      --purple-bg: #EEF0FF;
+      --orange: #F97316;
+      --green: #22C55E;
+      --red: #EF4444;
+      --text: #0F0E17;
+      --text-muted: #6B7280;
+      --border: #E5E7EB;
+      --white: #FFFFFF;
+      --hero-bg: #F0F0FF;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--purple); }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 10px 24px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-outline:hover { border-color: var(--purple); color: var(--purple); }
+
+    .btn-primary {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 10px;
+      background: var(--purple);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover { background: var(--purple-light); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 64px 60px 0;
+      background: linear-gradient(135deg, #f0f0ff 0%, #fafafe 50%, #f5f0ff 100%);
+      min-height: 560px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -80px;
+      width: 700px;
+      height: 700px;
+      background: conic-gradient(from 180deg at 50% 50%,
+        #a78bfa33, #818cf833, #38bdf833, #a78bfa33, #f0abfc33, #818cf833);
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .hero-left {
+      max-width: 440px;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: var(--purple);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    .hero-title .dot { color: var(--purple); }
+
+    .hero-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    .btn-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      background: var(--purple);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 8px 30px rgba(91,79,232,0.35);
+    }
+
+    .btn-hero:hover {
+      background: var(--purple-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(91,79,232,0.45);
+    }
+
+    .btn-hero .arrow {
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+
+    .btn-hero:hover .arrow { transform: translateX(4px); }
+
+    .hero-badges {
+      display: flex;
+      gap: 6px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      align-items: center;
+    }
+
+    .hero-badges .sep { color: var(--border); }
+
+    /* ── HERO RIGHT (figure + floating cards) ── */
+    .hero-right {
+      position: relative;
+      flex-shrink: 0;
+      width: 500px;
+      height: 520px;
+      z-index: 1;
+    }
+
+    .hero-figure {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 360px;
+      height: 480px;
+      background: linear-gradient(160deg, #ddd6fe 0%, #c7d2fe 40%, #e0e7ff 100%);
+      border-radius: 200px 200px 0 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Stylised silhouette with CSS */
+    .figure-inner {
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse 90px 120px at 50% 18%, #f4d4b4 0%, transparent 100%),
+        radial-gradient(ellipse 70px 200px at 50% 55%, #f8e8d8 0%, transparent 100%);
+    }
+
+    .hero-tag {
+      position: absolute;
+      background: #fff;
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 170px;
+    }
+
+    .hero-tag .tag-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hero-tag .tag-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .hero-tag .tag-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .tag-1 { top: 60px; right: 0; }
+    .tag-2 { top: 175px; right: 10px; }
+    .tag-3 { top: 290px; right: 0; }
+
+    .tag-icon-blue { background: #EEF2FF; }
+    .tag-icon-orange { background: #FFF7ED; }
+    .tag-icon-purple { background: #F5F3FF; }
+
+    /* grid of dots icon simulation */
+    .grid-dots {
+      display: grid;
+      grid-template-columns: repeat(4,6px);
+      gap: 3px;
+    }
+
+    .grid-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    /* ── PROGRESS CARD ── */
+    .progress-card {
+      position: absolute;
+      bottom: 80px;
+      right: 0;
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      min-width: 200px;
+    }
+
+    .progress-card .pc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .progress-card .pc-count {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-wrap {
+      background: #E5E7EB;
+      border-radius: 6px;
+      height: 8px;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-fill {
+      height: 8px;
+      border-radius: 6px;
+      background: var(--purple);
+      width: 8%;
+    }
+
+    .progress-card .pc-time {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── STATS ROW ── */
+    .stats-section {
+      display: flex;
+      gap: 0;
+      padding: 40px 60px;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      flex: 1;
+      padding-right: 40px;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--purple-bg);
+      flex-shrink: 0;
+    }
+
+    .stat-text .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .stat-text .stat-value {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .stats-divider {
+      width: 1px;
+      background: var(--border);
+      height: 50px;
+      margin-top: 6px;
+    }
+
+    .stats-right {
+      display: flex;
+      flex: 1.4;
+      gap: 40px;
+      padding-left: 40px;
+      align-items: flex-start;
+    }
+
+    .testimonial {
+      flex: 1;
+    }
+
+    .testimonial .quote {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .testimonial .author {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .counter-block {
+      text-align: center;
+    }
+
+    .counter-block .big-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -1px;
+    }
+
+    .counter-block .cnt-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ── RESULTS PREVIEW ── */
+    .results-section {
+      padding: 0 60px 60px;
+    }
+
+    .results-row {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .results-row:last-child { border-bottom: none; }
+
+    .row-label {
+      font-size: 17px;
+      font-weight: 700;
+      min-width: 220px;
+      flex-shrink: 0;
+    }
+
+    /* Archetypes row */
+    .archetypes-list {
+      display: flex;
+      gap: 16px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .archetype-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 80px;
+    }
+
+    .arch-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arch-name { font-size: 12px; font-weight: 500; color: var(--text); }
+
+    .arch-score {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--purple);
+    }
+
+    .arch-nav {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--purple);
+      font-size: 16px;
+      margin-left: auto;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .arch-nav:hover { background: var(--purple-bg); border-color: var(--purple); }
+
+    /* Strategy row */
+    .strategy-list {
+      display: flex;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .strategy-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 110px;
+    }
+
+    .strat-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .strat-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .strat-name { font-size: 13px; font-weight: 600; }
+
+    .strat-score { font-size: 13px; font-weight: 600; }
+
+    .strat-bar-wrap {
+      height: 4px;
+      border-radius: 3px;
+      background: #E5E7EB;
+    }
+
+    .strat-bar { height: 4px; border-radius: 3px; }
+
+    /* Bug row */
+    .bug-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .bug-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFF5F5;
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
+    .bug-icon {
+      width: 36px;
+      height: 36px;
+      background: #FEE2E2;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .bug-score { font-size: 18px; font-weight: 800; color: var(--red); }
+    .bug-type { font-size: 11px; color: var(--text-muted); }
+
+    .bug-list { display: flex; flex-direction: column; gap: 6px; }
+
+    .bug-list-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .bug-list-item .x { color: var(--red); font-weight: 700; }
+
+    .superpower {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border-radius: 12px;
+      padding: 14px 18px;
+      min-width: 160px;
+    }
+
+    .superpower .sp-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+
+    .superpower .sp-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta {
+      margin: 0 60px 60px;
+      background: linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%);
+      border-radius: 24px;
+      padding: 48px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cta-title {
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--purple);
+      line-height: 1.15;
+      letter-spacing: -1px;
+    }
+
+    .cta-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: var(--purple);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 8px 30px rgba(91,79,232,0.35);
+    }
+
+    .btn-cta:hover {
+      background: var(--purple-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(91,79,232,0.45);
+    }
+
+    .cta-badges {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* ── SVG ICONS ── */
+    svg { display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 40px 24px 0; flex-direction: column; }
+      .hero-right { width: 100%; height: 360px; }
+      .hero-left { max-width: 100%; }
+      .hero-title { font-size: 36px; }
+      .stats-section { padding: 24px; flex-wrap: wrap; gap: 20px; }
+      .stats-right { padding-left: 0; }
+      .results-section { padding: 0 24px 40px; }
+      .results-row { flex-direction: column; align-items: flex-start; }
+      .bottom-cta { margin: 0 24px 40px; padding: 32px 28px; flex-direction: column; gap: 28px; }
+      .cta-right { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ NAVBAR ═══════════ -->
+<nav>
+  <div class="logo">Brandme</div>
+  <ul class="nav-links">
+    <li><a href="#">О тесте</a></li>
+    <li><a href="#">Результаты</a></li>
+    <li><a href="#">Отзывы</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-outline">Войти</button>
+    <button class="btn-primary">Начать бесплатно</button>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Тест на код реализации</p>
+    <h1 class="hero-title">Найди свою роль<br>в новой экономике<span class="dot">.</span></h1>
+    <p class="hero-subtitle">Карьерный вектор, сильные стороны и AI.</p>
+    <button class="btn-hero">
+      Узнать свой код <span class="arrow">→</span>
+    </button>
+    <div class="hero-badges">
+      <span>Бесплатно</span>
+      <span class="sep">•</span>
+      <span>2 минуты</span>
+      <span class="sep">•</span>
+      <span>Без регистрации</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Decorative figure -->
+    <div class="hero-figure">
+      <div class="figure-inner"></div>
+    </div>
+
+    <!-- Floating tag 1: Визионер -->
+    <div class="hero-tag tag-1">
+      <div class="tag-icon tag-icon-blue">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="5" cy="5" r="2.5" fill="#6366F1"/>
+          <circle cx="11" cy="5" r="2.5" fill="#6366F1"/>
+          <circle cx="17" cy="5" r="2.5" fill="#6366F1"/>
+          <circle cx="5" cy="11" r="2.5" fill="#6366F1" opacity=".5"/>
+          <circle cx="11" cy="11" r="2.5" fill="#6366F1"/>
+          <circle cx="17" cy="11" r="2.5" fill="#6366F1" opacity=".5"/>
+          <circle cx="5" cy="17" r="2.5" fill="#6366F1" opacity=".3"/>
+          <circle cx="11" cy="17" r="2.5" fill="#6366F1" opacity=".5"/>
+          <circle cx="17" cy="17" r="2.5" fill="#6366F1" opacity=".3"/>
+        </svg>
+      </div>
+      <div>
+        <div class="tag-label">Архетип</div>
+        <div class="tag-value">Визионер</div>
+      </div>
+    </div>
+
+    <!-- Floating tag 2: Стратег -->
+    <div class="hero-tag tag-2">
+      <div class="tag-icon tag-icon-orange">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="5" cy="5" r="2.5" fill="#F97316"/>
+          <circle cx="11" cy="5" r="2.5" fill="#F97316" opacity=".6"/>
+          <circle cx="17" cy="5" r="2.5" fill="#F97316" opacity=".3"/>
+          <circle cx="5" cy="11" r="2.5" fill="#F97316" opacity=".6"/>
+          <circle cx="11" cy="11" r="2.5" fill="#F97316"/>
+          <circle cx="17" cy="11" r="2.5" fill="#F97316" opacity=".6"/>
+          <circle cx="5" cy="17" r="2.5" fill="#F97316" opacity=".3"/>
+          <circle cx="11" cy="17" r="2.5" fill="#F97316" opacity=".6"/>
+          <circle cx="17" cy="17" r="2.5" fill="#F97316"/>
+        </svg>
+      </div>
+      <div>
+        <div class="tag-label">Сильная роль</div>
+        <div class="tag-value">Стратег</div>
+      </div>
+    </div>
+
+    <!-- Floating tag 3: Личный бренд + AI -->
+    <div class="hero-tag tag-3">
+      <div class="tag-icon tag-icon-purple">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <circle cx="5" cy="5" r="2.5" fill="#A855F7" opacity=".4"/>
+          <circle cx="11" cy="5" r="2.5" fill="#A855F7"/>
+          <circle cx="17" cy="5" r="2.5" fill="#A855F7" opacity=".4"/>
+          <circle cx="5" cy="11" r="2.5" fill="#A855F7"/>
+          <circle cx="11" cy="11" r="2.5" fill="#A855F7" opacity=".4"/>
+          <circle cx="17" cy="11" r="2.5" fill="#A855F7"/>
+          <circle cx="5" cy="17" r="2.5" fill="#A855F7" opacity=".4"/>
+          <circle cx="11" cy="17" r="2.5" fill="#A855F7"/>
+          <circle cx="17" cy="17" r="2.5" fill="#A855F7" opacity=".4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="tag-label">Вектор</div>
+        <div class="tag-value">Личный бренд + AI</div>
+      </div>
+    </div>
+
+    <!-- Progress card -->
+    <div class="progress-card">
+      <div class="pc-header">
+        <span>Прогресс</span>
+        <span class="pc-count">2 / 24</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill"></div>
+      </div>
+      <div class="pc-time">~1 минута</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ STATS ═══════════ -->
+<section class="stats-section">
+  <div class="stat-item">
+    <div class="stat-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B4FE8" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+    </div>
+    <div class="stat-text">
+      <div class="stat-value">2 минуты</div>
+      <div class="stat-label">на тест</div>
+    </div>
+  </div>
+
+  <div class="stats-divider"></div>
+
+  <div class="stat-item" style="padding-left:40px;">
+    <div class="stat-icon" style="background:#FFF7ED;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+    <div class="stat-text">
+      <div class="stat-value">58 000+</div>
+      <div class="stat-label">участников</div>
+    </div>
+  </div>
+
+  <div class="stats-divider"></div>
+
+  <div class="stat-item" style="padding-left:40px;">
+    <div class="stat-icon" style="background:#F0FDF4;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <div class="stat-text">
+      <div class="stat-value">Твой вектор</div>
+      <div class="stat-label">к роли</div>
+    </div>
+  </div>
+
+  <div class="stats-right">
+    <div class="testimonial">
+      <div class="quote">«Начни с кода. Действуй точнее.»</div>
+      <div class="author">— Мария К., продукт-менеджер</div>
+    </div>
+    <div class="counter-block">
+      <div class="big-num">58 742</div>
+      <div class="cnt-label">участника</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ RESULTS PREVIEW ═══════════ -->
+<section class="results-section">
+
+  <!-- Archetypes row -->
+  <div class="results-row">
+    <div class="row-label">Твои бизнес-архетипы</div>
+    <div class="archetypes-list">
+
+      <div class="archetype-item">
+        <div class="arch-icon" style="background:#EEF2FF;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="6" r="2.2" fill="#6366F1"/>
+            <circle cx="12" cy="6" r="2.2" fill="#6366F1" opacity=".5"/>
+            <circle cx="18" cy="6" r="2.2" fill="#6366F1" opacity=".3"/>
+            <circle cx="6" cy="12" r="2.2" fill="#6366F1" opacity=".5"/>
+            <circle cx="12" cy="12" r="2.2" fill="#6366F1"/>
+            <circle cx="18" cy="12" r="2.2" fill="#6366F1" opacity=".5"/>
+            <circle cx="6" cy="18" r="2.2" fill="#6366F1" opacity=".3"/>
+            <circle cx="12" cy="18" r="2.2" fill="#6366F1" opacity=".5"/>
+            <circle cx="18" cy="18" r="2.2" fill="#6366F1" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="arch-name">Исследователь</div>
+        <div class="arch-score">24/30</div>
+      </div>
+
+      <div class="archetype-item">
+        <div class="arch-icon" style="background:#EFF6FF;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="6" r="2.2" fill="#3B82F6" opacity=".3"/>
+            <circle cx="12" cy="6" r="2.2" fill="#3B82F6"/>
+            <circle cx="18" cy="6" r="2.2" fill="#3B82F6" opacity=".3"/>
+            <circle cx="6" cy="12" r="2.2" fill="#3B82F6"/>
+            <circle cx="12" cy="12" r="2.2" fill="#3B82F6" opacity=".5"/>
+            <circle cx="18" cy="12" r="2.2" fill="#3B82F6"/>
+            <circle cx="6" cy="18" r="2.2" fill="#3B82F6" opacity=".3"/>
+            <circle cx="12" cy="18" r="2.2" fill="#3B82F6" opacity=".5"/>
+            <circle cx="18" cy="18" r="2.2" fill="#3B82F6" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="arch-name">Новатор</div>
+        <div class="arch-score">24/30</div>
+      </div>
+
+      <div class="archetype-item">
+        <div class="arch-icon" style="background:#F5F3FF;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="6" r="2.2" fill="#8B5CF6" opacity=".4"/>
+            <circle cx="12" cy="6" r="2.2" fill="#8B5CF6"/>
+            <circle cx="18" cy="6" r="2.2" fill="#8B5CF6" opacity=".4"/>
+            <circle cx="6" cy="12" r="2.2" fill="#8B5CF6"/>
+            <circle cx="12" cy="12" r="2.2" fill="#8B5CF6" opacity=".6"/>
+            <circle cx="18" cy="12" r="2.2" fill="#8B5CF6"/>
+            <circle cx="6" cy="18" r="2.2" fill="#8B5CF6" opacity=".4"/>
+            <circle cx="12" cy="18" r="2.2" fill="#8B5CF6" opacity=".6"/>
+            <circle cx="18" cy="18" r="2.2" fill="#8B5CF6" opacity=".4"/>
+          </svg>
+        </div>
+        <div class="arch-name">Визионер</div>
+        <div class="arch-score">23/30</div>
+      </div>
+
+      <div class="archetype-item">
+        <div class="arch-icon" style="background:#FFFBEB;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="6" r="2.2" fill="#F59E0B" opacity=".3"/>
+            <circle cx="12" cy="6" r="2.2" fill="#F59E0B" opacity=".7"/>
+            <circle cx="18" cy="6" r="2.2" fill="#F59E0B" opacity=".3"/>
+            <circle cx="6" cy="12" r="2.2" fill="#F59E0B" opacity=".7"/>
+            <circle cx="12" cy="12" r="2.2" fill="#F59E0B"/>
+            <circle cx="18" cy="12" r="2.2" fill="#F59E0B" opacity=".7"/>
+            <circle cx="6" cy="18" r="2.2" fill="#F59E0B" opacity=".3"/>
+            <circle cx="12" cy="18" r="2.2" fill="#F59E0B" opacity=".7"/>
+            <circle cx="18" cy="18" r="2.2" fill="#F59E0B" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="arch-name">Стажер</div>
+        <div class="arch-score">23/30</div>
+      </div>
+
+      <div class="archetype-item">
+        <div class="arch-icon" style="background:#FFF7ED;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="6" cy="6" r="2.2" fill="#F97316" opacity=".4"/>
+            <circle cx="12" cy="6" r="2.2" fill="#F97316"/>
+            <circle cx="18" cy="6" r="2.2" fill="#F97316" opacity=".4"/>
+            <circle cx="6" cy="12" r="2.2" fill="#F97316"/>
+            <circle cx="12" cy="12" r="2.2" fill="#F97316" opacity=".6"/>
+            <circle cx="18" cy="12" r="2.2" fill="#F97316"/>
+            <circle cx="6" cy="18" r="2.2" fill="#F97316" opacity=".4"/>
+            <circle cx="12" cy="18" r="2.2" fill="#F97316" opacity=".6"/>
+            <circle cx="18" cy="18" r="2.2" fill="#F97316" opacity=".4"/>
+          </svg>
+        </div>
+        <div class="arch-name">Эксперт</div>
+        <div class="arch-score">23/30</div>
+      </div>
+
+      <button class="arch-nav">›</button>
+    </div>
+  </div>
+
+  <!-- Strategy row -->
+  <div class="results-row">
+    <div class="row-label">Стратегия: Лидерство</div>
+    <div class="strategy-list">
+
+      <div class="strategy-item">
+        <div class="strat-header">
+          <div class="strat-icon" style="background:#EEF2FF;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <span class="strat-name">Лидерство</span>
+        </div>
+        <div class="strat-score">69 / 90</div>
+        <div class="strat-bar-wrap">
+          <div class="strat-bar" style="width:77%;background:#6366F1;"></div>
+        </div>
+      </div>
+
+      <div class="strategy-item">
+        <div class="strat-header">
+          <div class="strat-icon" style="background:#FFF7ED;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2.5" stroke-linecap="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </div>
+          <span class="strat-name">Коммуникация</span>
+        </div>
+        <div class="strat-score">67 / 90</div>
+        <div class="strat-bar-wrap">
+          <div class="strat-bar" style="width:74%;background:#F97316;"></div>
+        </div>
+      </div>
+
+      <div class="strategy-item">
+        <div class="strat-header">
+          <div class="strat-icon" style="background:#F0FDF4;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </div>
+          <span class="strat-name">Экспертность</span>
+        </div>
+        <div class="strat-score">67 / 90</div>
+        <div class="strat-bar-wrap">
+          <div class="strat-bar" style="width:74%;background:#22C55E;"></div>
+        </div>
+      </div>
+
+      <div class="strategy-item">
+        <div class="strat-header">
+          <div class="strat-icon" style="background:#FFF1F2;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round">
+              <circle cx="12" cy="8" r="6"/>
+              <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+            </svg>
+          </div>
+          <span class="strat-name">Мастерство</span>
+        </div>
+        <div class="strat-score">64 / 90</div>
+        <div class="strat-bar-wrap">
+          <div class="strat-bar" style="width:71%;background:#EF4444;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bug row -->
+  <div class="results-row">
+    <div class="row-label">Баг: Ненасытный</div>
+    <div class="bug-content">
+
+      <div class="bug-badge">
+        <div class="bug-icon">🎯</div>
+        <div>
+          <div class="bug-score">12 / 15</div>
+          <div class="bug-type">Активный баг</div>
+        </div>
+      </div>
+
+      <div class="bug-list">
+        <div class="bug-list-item"><span class="x">✕</span> Рассеянный фокус</div>
+        <div class="bug-list-item"><span class="x">✕</span> Перегрузка задач</div>
+        <div class="bug-list-item"><span class="x">✕</span> Усталость</div>
+      </div>
+
+      <div class="superpower">
+        <div class="sp-label">✦ Суперсила</div>
+        <div class="sp-text">В фокусе —<br>неостановим.</div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════ BOTTOM CTA ═══════════ -->
+<div class="bottom-cta">
+  <div class="cta-title">Видишь контуры.<br>Пора в карту.</div>
+  <div class="cta-right">
+    <button class="btn-cta">Получить отчёт <span>→</span></button>
+    <div class="cta-badges">
+      <span>Бесплатно</span>
+      <span>•</span>
+      <span>2 минуты</span>
+      <span>•</span>
+      <span>Без регистрации</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
