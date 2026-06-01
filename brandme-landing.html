@@ -208,28 +208,23 @@
       z-index: 1;
     }
 
-    .hero-figure {
+    .aurora-svg {
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 360px;
-      height: 480px;
-      background: linear-gradient(160deg, #ddd6fe 0%, #c7d2fe 40%, #e0e7ff 100%);
-      border-radius: 200px 200px 0 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    /* Stylised silhouette with CSS */
-    .figure-inner {
+      inset: 0;
       width: 100%;
       height: 100%;
-      background:
-        radial-gradient(ellipse 90px 120px at 50% 18%, #f4d4b4 0%, transparent 100%),
-        radial-gradient(ellipse 70px 200px at 50% 55%, #f8e8d8 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .figure-svg {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: auto;
+      filter: drop-shadow(0 24px 48px rgba(91,79,232,0.18));
+      z-index: 2;
     }
 
     .hero-tag {
@@ -683,10 +678,10 @@
 
       .hero-right {
         width: 100%;
-        height: 260px;
+        height: 300px;
         flex-shrink: 0;
       }
-      .hero-figure { width: 220px; height: 240px; border-radius: 130px 130px 0 0; }
+      .figure-svg { width: 200px; bottom: -6px; }
 
       /* show only 1 tag, hide others to avoid overlap */
       .tag-1 { top: 10px; right: 0; min-width: 150px; padding: 10px 12px; }
@@ -804,10 +799,81 @@
   </div>
 
   <div class="hero-right">
-    <!-- Decorative figure -->
-    <div class="hero-figure">
-      <div class="figure-inner"></div>
-    </div>
+    <!-- Aurora streaks -->
+    <svg class="aurora-svg" viewBox="0 0 500 540" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+      <path d="M-60,540 C80,400 240,220 560,50"  stroke="#818cf8" stroke-width="3.5" stroke-linecap="round" opacity=".6"/>
+      <path d="M-60,510 C60,370 210,190 560,18"  stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
+      <path d="M-60,570 C100,420 270,250 560,80"  stroke="#c084fc" stroke-width="3"   stroke-linecap="round" opacity=".55"/>
+      <path d="M-60,475 C70,345 220,155 560,-15" stroke="#e879f9" stroke-width="2"   stroke-linecap="round" opacity=".45"/>
+      <path d="M-60,600 C110,450 290,280 560,110" stroke="#a78bfa" stroke-width="2"   stroke-linecap="round" opacity=".4"/>
+      <path d="M20,545  C145,410 310,230 560,68"  stroke="#7dd3fc" stroke-width="1.5" stroke-linecap="round" opacity=".45"/>
+      <path d="M-60,445 C80,320 240,128 560,-48" stroke="#f0abfc" stroke-width="2"   stroke-linecap="round" opacity=".38"/>
+      <path d="M60,530  C175,395 325,215 560,78"  stroke="#818cf8" stroke-width="1"   stroke-linecap="round" opacity=".3"/>
+      <path d="M-30,620 C115,470 285,298 560,138" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+      <!-- soft glow blob behind figure -->
+      <ellipse cx="280" cy="300" rx="130" ry="200" fill="#a78bfa" opacity=".07"/>
+      <ellipse cx="280" cy="280" rx="80"  ry="140" fill="#818cf8" opacity=".06"/>
+    </svg>
+
+    <!-- Stylised woman figure -->
+    <svg class="figure-svg" viewBox="0 0 240 460" fill="none" aria-hidden="true">
+      <!-- legs -->
+      <path d="M98,318 L82,448"  stroke="#eee8ff" stroke-width="34" stroke-linecap="round"/>
+      <path d="M142,318 L158,448" stroke="#eee8ff" stroke-width="34" stroke-linecap="round"/>
+      <!-- body (white jacket) -->
+      <path d="M72,156 C65,192 62,258 76,318 L164,318 C178,258 175,192 168,156 C154,140 86,140 72,156Z" fill="#f4f0ff"/>
+      <!-- jacket lapels -->
+      <path d="M110,156 L120,200 L130,156" stroke="#ddd6f8" stroke-width="2" fill="none"/>
+      <!-- crop top hint -->
+      <rect x="94" y="200" width="52" height="18" rx="4" fill="#e8e4f0"/>
+      <!-- belt -->
+      <rect x="68" y="236" width="104" height="16" rx="8" fill="#1a1828"/>
+      <rect x="110" y="239" width="20" height="10" rx="3" fill="#2d2844"/>
+      <!-- neck -->
+      <rect x="107" y="118" width="26" height="28" rx="13" fill="#edcba8"/>
+      <!-- right arm raised up -->
+      <path d="M164,170 Q186,132 202,82" stroke="#edcba8" stroke-width="24" stroke-linecap="round"/>
+      <!-- robotic extension right -->
+      <path d="M202,82  Q212,50 208,14"  stroke="#9ba5c0" stroke-width="10" stroke-linecap="round"/>
+      <path d="M208,14  Q212,0  218,-12" stroke="#9ba5c0" stroke-width="7"  stroke-linecap="round"/>
+      <!-- phone in right hand -->
+      <g transform="rotate(-22 210 -20)">
+        <rect x="200" y="-32" width="22" height="36" rx="5" fill="#1e1b38"/>
+        <rect x="203" y="-29" width="16" height="26" rx="3" fill="#4c4980" opacity=".7"/>
+        <circle cx="211" cy="-16" r="6" fill="#a78bfa" opacity=".9"/>
+        <circle cx="211" cy="-16" r="3" fill="#c4b5fd"/>
+      </g>
+      <!-- left arm extended left -->
+      <path d="M76,174 Q46,188 12,182" stroke="#edcba8" stroke-width="22" stroke-linecap="round"/>
+      <!-- robotic extension left -->
+      <path d="M12,182 Q-12,178 -26,170" stroke="#9ba5c0" stroke-width="9" stroke-linecap="round"/>
+      <!-- laptop in left hand -->
+      <rect x="-58" y="158" width="40" height="28" rx="4" fill="#e8e8f4"/>
+      <rect x="-55" y="161" width="34" height="20" rx="2" fill="#3a3858"/>
+      <rect x="-62" y="186" width="48" height="5"  rx="2.5" fill="#cccce0"/>
+      <!-- head -->
+      <ellipse cx="120" cy="84" rx="36" ry="44" fill="#edcba8"/>
+      <!-- hair back -->
+      <path d="M84,78 Q86,30 120,28 Q154,30 156,78" fill="#c07038"/>
+      <!-- hair side strand -->
+      <path d="M84,78 Q80,90 83,106" stroke="#c07038" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <!-- hair highlight -->
+      <path d="M96,36 Q112,28 128,33" stroke="#d4894a" stroke-width="4.5" stroke-linecap="round" fill="none" opacity=".5"/>
+      <!-- headphones arc -->
+      <path d="M84,76 Q82,40 120,38 Q158,40 156,76" stroke="#2a2840" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <!-- headphone cups -->
+      <rect x="75"  y="70" width="16" height="22" rx="8" fill="#2a2840"/>
+      <rect x="149" y="70" width="16" height="22" rx="8" fill="#2a2840"/>
+      <!-- eyes -->
+      <ellipse cx="107" cy="88" rx="4.5" ry="5" fill="#3d2b12"/>
+      <ellipse cx="133" cy="88" rx="4.5" ry="5" fill="#3d2b12"/>
+      <circle  cx="109" cy="86" r="1.5" fill="#fff" opacity=".6"/>
+      <circle  cx="135" cy="86" r="1.5" fill="#fff" opacity=".6"/>
+      <!-- smile -->
+      <path d="M110,102 Q120,110 130,102" stroke="#8b5e3c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- necklace hint -->
+      <path d="M108,138 Q120,146 132,138" stroke="#d4a96a" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
+    </svg>
 
     <!-- Floating tag 1: Визионер -->
     <div class="hero-tag tag-1">
