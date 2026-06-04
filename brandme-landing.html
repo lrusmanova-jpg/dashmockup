@@ -8,765 +8,168 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --purple: #5B4FE8;
-      --purple-light: #7B6FF0;
-      --purple-bg: #EEF0FF;
-      --orange: #F97316;
-      --green: #22C55E;
-      --red: #EF4444;
-      --text: #0F0E17;
-      --text-muted: #6B7280;
-      --border: #E5E7EB;
-      --white: #FFFFFF;
-      --hero-bg: #F0F0FF;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      color: var(--text);
-      background: #fff;
-      overflow-x: hidden;
-    }
-
-    /* ── NAVBAR ── */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 60px;
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.5px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--purple); }
-
-    .nav-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .btn-outline {
-      padding: 10px 24px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      background: transparent;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      color: var(--text);
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .btn-outline:hover { border-color: var(--purple); color: var(--purple); }
-
-    .btn-primary {
-      padding: 10px 24px;
-      border: none;
-      border-radius: 10px;
-      background: var(--purple);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #fff;
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .btn-primary:hover { background: var(--purple-light); transform: translateY(-1px); }
-
-    /* ── HERO ── */
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 64px 60px 0;
-      background: linear-gradient(135deg, #f0f0ff 0%, #fafafe 50%, #f5f0ff 100%);
-      min-height: 560px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -120px;
-      right: -80px;
-      width: 700px;
-      height: 700px;
-      background: conic-gradient(from 180deg at 50% 50%,
-        #a78bfa33, #818cf833, #38bdf833, #a78bfa33, #f0abfc33, #818cf833);
-      border-radius: 50%;
-      filter: blur(60px);
-      pointer-events: none;
-    }
-
-    .hero-left {
-      max-width: 440px;
-      z-index: 1;
-    }
-
-    .hero-eyebrow {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      color: var(--purple);
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
-    .hero-title {
-      font-size: 52px;
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: -1.5px;
-      color: var(--text);
-      margin-bottom: 18px;
-    }
-
-    .hero-title .dot { color: var(--purple); }
-
-    .hero-subtitle {
-      font-size: 17px;
-      color: var(--text-muted);
-      margin-bottom: 36px;
-      line-height: 1.5;
-    }
-
-    .btn-hero {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 32px;
-      background: var(--purple);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      box-shadow: 0 8px 30px rgba(91,79,232,0.35);
-    }
-
-    .btn-hero:hover {
-      background: var(--purple-light);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(91,79,232,0.45);
-    }
-
-    .btn-hero .arrow {
-      font-size: 18px;
-      transition: transform 0.2s;
-    }
-
-    .btn-hero:hover .arrow { transform: translateX(4px); }
-
-    .hero-badges {
-      display: flex;
-      gap: 6px;
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--text-muted);
-      align-items: center;
-    }
-
-    .hero-badges .sep { color: var(--border); }
-
-    /* ── HERO RIGHT (figure + floating cards) ── */
-    .hero-right {
-      position: relative;
-      flex-shrink: 0;
-      width: 500px;
-      height: 520px;
-      z-index: 1;
-    }
-
-    .aurora-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .figure-svg {
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 300px;
-      height: auto;
-      filter: drop-shadow(0 24px 48px rgba(91,79,232,0.18));
-      z-index: 2;
-    }
-
-    .hero-tag {
-      position: absolute;
-      background: #fff;
-      border-radius: 14px;
-      padding: 12px 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 170px;
-    }
-
-    .hero-tag .tag-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .hero-tag .tag-label {
-      font-size: 10px;
-      color: var(--text-muted);
-      font-weight: 500;
-      margin-bottom: 2px;
-    }
-
-    .hero-tag .tag-value {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .tag-1 { top: 60px; right: 0; }
-    .tag-2 { top: 175px; right: 10px; }
-    .tag-3 { top: 290px; right: 0; }
-
-    .tag-icon-blue { background: #EEF2FF; }
-    .tag-icon-orange { background: #FFF7ED; }
-    .tag-icon-purple { background: #F5F3FF; }
-
-    /* grid of dots icon simulation */
-    .grid-dots {
-      display: grid;
-      grid-template-columns: repeat(4,6px);
-      gap: 3px;
-    }
-
-    .grid-dots span {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
-
-    /* ── PROGRESS CARD ── */
-    .progress-card {
-      position: absolute;
-      bottom: 80px;
-      right: 0;
-      background: #fff;
-      border-radius: 16px;
-      padding: 16px 20px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-      min-width: 200px;
-    }
-
-    .progress-card .pc-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .progress-card .pc-count {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    .progress-bar-wrap {
-      background: #E5E7EB;
-      border-radius: 6px;
-      height: 8px;
-      margin-bottom: 8px;
-    }
-
-    .progress-bar-fill {
-      height: 8px;
-      border-radius: 6px;
-      background: var(--purple);
-      width: 8%;
-    }
-
-    .progress-card .pc-time {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* ── STATS ROW ── */
-    .stats-section {
-      display: flex;
-      gap: 0;
-      padding: 40px 60px;
-      border-bottom: 1px solid var(--border);
-      align-items: flex-start;
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      flex: 1;
-      padding-right: 40px;
-    }
-
-    .stat-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--purple-bg);
-      flex-shrink: 0;
-    }
-
-    .stat-text .stat-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-      line-height: 1.4;
-    }
-
-    .stat-text .stat-value {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .stat-item--pad { padding-left: 40px; }
-
-    .stats-divider {
-      width: 1px;
-      background: var(--border);
-      height: 50px;
-      margin-top: 6px;
-    }
-
-    .stats-right {
-      display: flex;
-      flex: 1.4;
-      gap: 40px;
-      padding-left: 40px;
-      align-items: flex-start;
-    }
-
-    .testimonial {
-      flex: 1;
-    }
-
-    .testimonial .quote {
-      font-size: 14px;
-      font-style: italic;
-      color: var(--text);
-      line-height: 1.5;
-      margin-bottom: 6px;
-    }
-
-    .testimonial .author {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .counter-block {
-      text-align: center;
-    }
-
-    .counter-block .big-num {
-      font-size: 36px;
-      font-weight: 900;
-      color: var(--text);
-      letter-spacing: -1px;
-    }
-
-    .counter-block .cnt-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* ── RESULTS PREVIEW ── */
-    .results-section {
-      padding: 0 60px 60px;
-    }
-
-    .results-row {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      padding: 28px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .results-row:last-child { border-bottom: none; }
-
-    .row-label {
-      font-size: 17px;
-      font-weight: 700;
-      min-width: 220px;
-      flex-shrink: 0;
-    }
-
-    /* Archetypes row */
-    .archetypes-list {
-      display: flex;
-      gap: 16px;
-      flex: 1;
-      align-items: center;
-    }
-
-    .archetype-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      min-width: 80px;
-    }
-
-    .arch-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .arch-name { font-size: 12px; font-weight: 500; color: var(--text); }
-
-    .arch-score {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--purple);
-    }
-
-    .arch-nav {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border);
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--purple);
-      font-size: 16px;
-      margin-left: auto;
-      transition: background 0.2s, border-color 0.2s;
-    }
-
-    .arch-nav:hover { background: var(--purple-bg); border-color: var(--purple); }
-
-    /* Strategy row */
-    .strategy-list {
-      display: flex;
-      gap: 24px;
-      flex: 1;
-    }
-
-    .strategy-item {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 110px;
-    }
-
-    .strat-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .strat-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .strat-name { font-size: 13px; font-weight: 600; }
-
-    .strat-score { font-size: 13px; font-weight: 600; }
-
-    .strat-bar-wrap {
-      height: 4px;
-      border-radius: 3px;
-      background: #E5E7EB;
-    }
-
-    .strat-bar { height: 4px; border-radius: 3px; }
-
-    /* Bug row */
-    .bug-content {
-      display: flex;
-      align-items: flex-start;
-      gap: 24px;
-      flex: 1;
-    }
-
-    .bug-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #FFF5F5;
-      border-radius: 12px;
-      padding: 12px 16px;
-    }
-
-    .bug-icon {
-      width: 36px;
-      height: 36px;
-      background: #FEE2E2;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-    }
-
-    .bug-score { font-size: 18px; font-weight: 800; color: var(--red); }
-    .bug-type { font-size: 11px; color: var(--text-muted); }
-
-    .bug-list { display: flex; flex-direction: column; gap: 6px; }
-
-    .bug-list-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .bug-list-item .x { color: var(--red); font-weight: 700; }
-
-    .superpower {
-      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-      border-radius: 12px;
-      padding: 14px 18px;
-      min-width: 160px;
-    }
-
-    .superpower .sp-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--green);
-      margin-bottom: 6px;
-    }
-
-    .superpower .sp-text {
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.4;
-    }
-
-    /* ── BOTTOM CTA ── */
-    .bottom-cta {
-      margin: 0 60px 60px;
-      background: linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%);
-      border-radius: 24px;
-      padding: 48px 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .cta-title {
-      font-size: 34px;
-      font-weight: 900;
-      color: var(--purple);
-      line-height: 1.15;
-      letter-spacing: -1px;
-    }
-
-    .cta-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 12px;
-    }
-
-    .btn-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 36px;
-      background: var(--purple);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      border-radius: 14px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      box-shadow: 0 8px 30px rgba(91,79,232,0.35);
-    }
-
-    .btn-cta:hover {
-      background: var(--purple-light);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(91,79,232,0.45);
-    }
-
-    .cta-badges {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    /* ── SVG ICONS ── */
-    svg { display: block; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      /* NAVBAR */
-      nav { padding: 14px 20px; }
-      .nav-links { display: none; }
-      .btn-outline { display: none; }
-
-      /* HERO */
-      .hero {
-        padding: 36px 20px 0;
-        flex-direction: column;
-        align-items: flex-start;
-        min-height: auto;
-        gap: 8px;
-      }
-      .hero-left { max-width: 100%; width: 100%; }
-      .hero-title { font-size: 34px; letter-spacing: -1px; }
-      .hero-subtitle { font-size: 15px; margin-bottom: 28px; }
-      .btn-hero { width: 100%; justify-content: center; }
-      .hero-badges { justify-content: center; }
-
-      .hero-right {
-        width: 100%;
-        height: 300px;
-        flex-shrink: 0;
-      }
-      .figure-svg { width: 200px; bottom: -6px; }
-
-      /* show only 1 tag, hide others to avoid overlap */
-      .tag-1 { top: 10px; right: 0; min-width: 150px; padding: 10px 12px; }
-      .tag-2 { display: none; }
-      .tag-3 { display: none; }
-      .progress-card { display: none; }
-
-      /* STATS */
-      .stats-section {
-        padding: 24px 20px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-      }
-      .stat-item { padding: 0 !important; }
-      .stats-divider { display: none; }
-      .stats-right {
-        width: 100%;
-        padding-left: 0 !important;
-        border-top: 1px solid var(--border);
-        padding-top: 20px;
-        gap: 24px;
-      }
-
-      /* RESULTS */
-      .results-section { padding: 0 20px 40px; }
-      .results-row { flex-direction: column; align-items: flex-start; gap: 14px; padding: 20px 0; }
-      .row-label { min-width: unset; font-size: 15px; }
-
-      /* archetypes: horizontal scroll */
-      .archetypes-list {
-        width: 100%;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        -webkit-overflow-scrolling: touch;
-        padding-bottom: 4px;
-        gap: 12px;
-      }
-      .archetypes-list::-webkit-scrollbar { height: 3px; }
-      .archetypes-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-      .archetype-item { min-width: 68px; flex-shrink: 0; }
-      .arch-nav { display: none; }
-
-      /* strategy: 2×2 grid */
-      .strategy-list {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        width: 100%;
-      }
-      .strategy-item { min-width: unset; }
-
-      /* bug */
-      .bug-content { flex-direction: column; width: 100%; gap: 14px; }
-      .superpower { min-width: unset; width: 100%; }
-
-      /* BOTTOM CTA */
-      .bottom-cta {
-        margin: 0 20px 40px;
-        padding: 28px 24px;
-        flex-direction: column;
-        gap: 24px;
-        border-radius: 18px;
-      }
-      .cta-title { font-size: 26px; }
-      .cta-right { align-items: flex-start; width: 100%; }
-      .btn-cta { width: 100%; justify-content: center; }
-      .cta-badges { justify-content: center; }
-    }
-
-    @media (max-width: 480px) {
-      nav { padding: 12px 16px; }
-      .logo { font-size: 19px; }
-      .btn-primary { padding: 9px 16px; font-size: 13px; }
-      .hero { padding: 28px 16px 0; }
-      .hero-title { font-size: 28px; }
-      .results-section { padding: 0 16px 32px; }
-      .stats-section { padding: 20px 16px; }
-      .bottom-cta { margin: 0 16px 32px; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --p:#5046E5;--pl:#7068F0;--pbg:#EEEEFF;
+      --t:#0F0E17;--m:#6B7280;--bd:#E5E7EB;
+    }
+    body{font-family:'Inter',sans-serif;color:var(--t);background:#fff;overflow-x:hidden}
+    svg{display:block}
+
+    /* NAV */
+    nav{display:flex;align-items:center;justify-content:space-between;padding:18px 60px;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
+    .logo{font-size:22px;font-weight:800;letter-spacing:-.5px}
+    .nav-links{display:flex;gap:36px;list-style:none}
+    .nav-links a{text-decoration:none;color:var(--t);font-size:15px;font-weight:500}
+    .nav-links a:hover{color:var(--p)}
+    .nav-acts{display:flex;gap:10px}
+    .btn-o{padding:10px 22px;border:1.5px solid var(--bd);border-radius:10px;background:transparent;font-size:14px;font-weight:600;cursor:pointer;color:var(--t)}
+    .btn-o:hover{border-color:var(--p);color:var(--p)}
+    .btn-prim{padding:10px 22px;border:none;border-radius:10px;background:var(--p);font-size:14px;font-weight:600;cursor:pointer;color:#fff}
+    .btn-prim:hover{background:var(--pl)}
+
+    /* HERO */
+    .hero{display:flex;align-items:flex-end;justify-content:space-between;padding:64px 60px 0;background:linear-gradient(155deg,#f2f1ff 0%,#fafaff 50%,#f4f0ff 100%);min-height:620px;position:relative;overflow:hidden}
+    .hero-left{max-width:440px;z-index:2;padding-bottom:64px}
+    .eyebrow{font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--p);text-transform:uppercase;margin-bottom:18px}
+    .h1{font-size:54px;font-weight:900;line-height:1.07;letter-spacing:-2px;margin-bottom:16px}
+    .h1 .dot{color:var(--p)}
+    .sub{font-size:17px;color:var(--m);line-height:1.5;margin-bottom:32px}
+    .btn-hero{display:inline-flex;align-items:center;gap:10px;padding:16px 32px;background:var(--p);color:#fff;font-size:16px;font-weight:700;border-radius:14px;border:none;cursor:pointer;box-shadow:0 8px 28px rgba(80,70,229,.38);transition:background .2s,transform .15s}
+    .btn-hero:hover{background:var(--pl);transform:translateY(-2px)}
+    .badges{display:flex;gap:6px;align-items:center;margin-top:14px;font-size:13px;color:var(--m)}
+    .badges .s{color:#ccc}
+
+    /* HERO RIGHT */
+    .hero-r{position:relative;flex-shrink:0;width:560px;height:620px;z-index:1}
+    .aurora{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+    .fig{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:380px;height:auto;z-index:2;filter:drop-shadow(0 30px 60px rgba(80,70,229,.14))}
+
+    /* tag cards */
+    .tag{position:absolute;background:#fff;border-radius:14px;padding:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,.10);display:flex;align-items:center;gap:10px;min-width:178px;z-index:3}
+    .tic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .tlbl{font-size:10px;color:var(--m);font-weight:500;margin-bottom:3px}
+    .tval{font-size:15px;font-weight:700}
+    .t1{top:60px;right:0}
+    .t2{top:190px;right:16px}
+    .t3{top:320px;right:0}
+
+    /* progress */
+    .prog{position:absolute;bottom:100px;right:0;z-index:3;background:#fff;border-radius:16px;padding:16px 20px;box-shadow:0 4px 24px rgba(0,0,0,.10);min-width:210px}
+    .prog-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .prog-hd span:first-child{font-size:14px;font-weight:600}
+    .prog-hd span:last-child{font-size:13px;color:var(--m)}
+    .ptrack{background:#E5E7EB;border-radius:6px;height:8px;margin-bottom:8px}
+    .pfill{height:8px;border-radius:6px;background:var(--p);width:8%}
+    .ptime{font-size:12px;color:var(--m)}
+
+    /* STATS */
+    .stats{display:flex;align-items:flex-start;padding:36px 60px;border-bottom:1px solid var(--bd)}
+    .stat{display:flex;align-items:flex-start;gap:14px;flex:1}
+    .stat+.stat{border-left:1px solid var(--bd);margin-left:32px;padding-left:32px}
+    .sic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sv{font-size:16px;font-weight:700}
+    .sl{font-size:13px;color:var(--m);margin-top:3px;line-height:1.3}
+    .stats-r{display:flex;gap:40px;align-items:flex-start;flex:1.2;border-left:1px solid var(--bd);margin-left:32px;padding-left:32px}
+    .quote{font-size:14px;font-style:italic;line-height:1.5;flex:1}
+    .quote cite{display:block;font-style:normal;font-size:12px;color:var(--m);margin-top:5px}
+    .ctr{text-align:center;flex-shrink:0}
+    .ctr-n{font-size:38px;font-weight:900;letter-spacing:-1.5px}
+    .ctr-l{font-size:13px;color:var(--m);margin-top:2px}
+
+    /* RESULTS */
+    .results{padding:0 60px 60px}
+    .rrow{display:flex;align-items:center;gap:32px;padding:26px 0;border-bottom:1px solid var(--bd)}
+    .rrow:last-child{border-bottom:none}
+    .rlbl{font-size:17px;font-weight:700;min-width:220px;flex-shrink:0}
+
+    /* archs */
+    .archs{display:flex;gap:18px;flex:1;align-items:center}
+    .arch{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:78px}
+    .aic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+    .an{font-size:12px;font-weight:500;text-align:center}
+    .as{font-size:14px;font-weight:700;color:var(--p)}
+    .anav{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--bd);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--p);font-size:18px;margin-left:auto}
+    .anav:hover{background:var(--pbg);border-color:var(--p)}
+
+    /* strategy */
+    .strats{display:flex;gap:24px;flex:1}
+    .strat{display:flex;flex-direction:column;gap:6px;flex:1}
+    .shd{display:flex;align-items:center;gap:8px}
+    .stic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .stn{font-size:13px;font-weight:600}
+    .sts{font-size:13px;font-weight:600}
+    .bb{height:4px;border-radius:3px;background:#E5E7EB}
+    .bf{height:4px;border-radius:3px}
+
+    /* bug */
+    .bwrap{display:flex;align-items:flex-start;gap:24px;flex:1}
+    .bbadge{display:flex;align-items:center;gap:10px;background:#FFF5F5;border-radius:12px;padding:12px 16px}
+    .bic{width:36px;height:36px;background:#FEE2E2;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+    .bsc{font-size:18px;font-weight:800;color:#EF4444}
+    .btp{font-size:11px;color:var(--m)}
+    .bitems{display:flex;flex-direction:column;gap:6px}
+    .bi{display:flex;align-items:center;gap:7px;font-size:13px}
+    .bi .x{color:#EF4444;font-weight:700}
+    .sp{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:12px;padding:14px 18px;min-width:155px}
+    .spl{font-size:11px;font-weight:700;color:#22C55E;margin-bottom:5px}
+    .spt{font-size:13px;line-height:1.4}
+
+    /* CTA */
+    .cta{margin:0 60px 60px;padding:48px 56px;background:linear-gradient(135deg,#EEEEFF,#F5F0FF);border-radius:24px;display:flex;align-items:center;justify-content:space-between}
+    .cta-t{font-size:34px;font-weight:900;color:var(--p);line-height:1.15;letter-spacing:-1px}
+    .cta-r{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+    .btn-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:var(--p);color:#fff;font-size:16px;font-weight:700;border-radius:14px;border:none;cursor:pointer;box-shadow:0 8px 28px rgba(80,70,229,.38)}
+    .btn-cta:hover{background:var(--pl)}
+    .cbadges{font-size:12px;color:var(--m);display:flex;gap:6px}
+    .cbadges .s{color:#ccc}
+
+    /* MOBILE */
+    @media(max-width:768px){
+      nav{padding:14px 20px}
+      .nav-links{display:none}
+      .btn-o{display:none}
+      .hero{padding:36px 20px 0;flex-direction:column;align-items:flex-start;min-height:auto}
+      .hero-left{max-width:100%;padding-bottom:32px}
+      .h1{font-size:34px;letter-spacing:-1px}
+      .sub{font-size:15px;margin-bottom:24px}
+      .btn-hero{width:100%;justify-content:center}
+      .badges{justify-content:center}
+      .hero-r{width:100%;height:300px}
+      .fig{width:210px}
+      .t1{top:8px;right:0;min-width:148px;padding:10px 12px}
+      .t2,.t3,.prog{display:none}
+      .stats{padding:24px 20px;flex-direction:column;gap:20px}
+      .stat+.stat{border-left:none;border-top:1px solid var(--bd);margin-left:0;padding-left:0;padding-top:20px}
+      .stats-r{border-left:none;border-top:1px solid var(--bd);margin-left:0;padding-left:0;padding-top:20px;flex-direction:column;gap:16px}
+      .results{padding:0 20px 40px}
+      .rrow{flex-direction:column;align-items:flex-start;gap:14px;padding:20px 0}
+      .rlbl{min-width:unset;font-size:15px}
+      .archs{width:100%;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+      .arch{min-width:68px;flex-shrink:0}
+      .anav{display:none}
+      .strats{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%}
+      .bwrap{flex-direction:column;width:100%;gap:14px}
+      .sp{min-width:unset;width:100%}
+      .cta{margin:0 20px 40px;padding:28px 24px;flex-direction:column;gap:24px;border-radius:18px}
+      .cta-t{font-size:26px}
+      .cta-r{align-items:flex-start;width:100%}
+      .btn-cta{width:100%;justify-content:center}
+      .cbadges{justify-content:center}
+    }
+    @media(max-width:480px){
+      nav{padding:12px 16px}
+      .hero{padding:28px 16px 0}
+      .h1{font-size:28px}
+      .results{padding:0 16px 32px}
+      .stats{padding:20px 16px}
+      .cta{margin:0 16px 32px}
     }
   </style>
 </head>
 <body>
 
-<!-- ═══════════ NAVBAR ═══════════ -->
+<!-- NAV -->
 <nav>
   <div class="logo">Brandme</div>
   <ul class="nav-links">
@@ -774,105 +177,149 @@
     <li><a href="#">Результаты</a></li>
     <li><a href="#">Отзывы</a></li>
   </ul>
-  <div class="nav-actions">
-    <button class="btn-outline">Войти</button>
-    <button class="btn-primary">Начать бесплатно</button>
+  <div class="nav-acts">
+    <button class="btn-o">Войти</button>
+    <button class="btn-prim">Начать бесплатно</button>
   </div>
 </nav>
 
-<!-- ═══════════ HERO ═══════════ -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-left">
-    <p class="hero-eyebrow">Тест на код реализации</p>
-    <h1 class="hero-title">Найди свою роль<br>в новой экономике<span class="dot">.</span></h1>
-    <p class="hero-subtitle">Карьерный вектор, сильные стороны и AI.</p>
-    <button class="btn-hero">
-      Узнать свой код <span class="arrow">→</span>
-    </button>
+    <p class="eyebrow">Тест на код реализации</p>
+    <h1 class="h1">Найди свою роль<br>в новой экономике<span class="dot">.</span></h1>
+    <p class="sub">Карьерный вектор, сильные стороны и AI.</p>
+    <button class="btn-hero">Узнать свой код <span>→</span></button>
+    <div class="badges">
+      <span>Бесплатно</span><span class="s">•</span>
+      <span>2 минуты</span><span class="s">•</span>
+      <span>Без регистрации</span>
+    </div>
   </div>
 
-  <div class="hero-right">
-    <!-- Aurora streaks -->
-    <svg class="aurora-svg" viewBox="0 0 500 540" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
-      <path d="M-60,540 C80,400 240,220 560,50"  stroke="#818cf8" stroke-width="3.5" stroke-linecap="round" opacity=".6"/>
-      <path d="M-60,510 C60,370 210,190 560,18"  stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
-      <path d="M-60,570 C100,420 270,250 560,80"  stroke="#c084fc" stroke-width="3"   stroke-linecap="round" opacity=".55"/>
-      <path d="M-60,475 C70,345 220,155 560,-15" stroke="#e879f9" stroke-width="2"   stroke-linecap="round" opacity=".45"/>
-      <path d="M-60,600 C110,450 290,280 560,110" stroke="#a78bfa" stroke-width="2"   stroke-linecap="round" opacity=".4"/>
-      <path d="M20,545  C145,410 310,230 560,68"  stroke="#7dd3fc" stroke-width="1.5" stroke-linecap="round" opacity=".45"/>
-      <path d="M-60,445 C80,320 240,128 560,-48" stroke="#f0abfc" stroke-width="2"   stroke-linecap="round" opacity=".38"/>
-      <path d="M60,530  C175,395 325,215 560,78"  stroke="#818cf8" stroke-width="1"   stroke-linecap="round" opacity=".3"/>
-      <path d="M-30,620 C115,470 285,298 560,138" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
-      <!-- soft glow blob behind figure -->
-      <ellipse cx="280" cy="300" rx="130" ry="200" fill="#a78bfa" opacity=".07"/>
-      <ellipse cx="280" cy="280" rx="80"  ry="140" fill="#818cf8" opacity=".06"/>
+  <div class="hero-r">
+
+    <!-- AURORA with glow filters -->
+    <svg class="aurora" viewBox="0 0 560 620" preserveAspectRatio="xMidYMid slice" fill="none">
+      <defs>
+        <filter id="gb" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="32"/>
+        </filter>
+        <filter id="gm" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="16"/>
+        </filter>
+      </defs>
+      <!-- wide soft glow bands -->
+      <path d="M-80,660 C120,460 310,250 680,40"  stroke="#818cf8" stroke-width="140" stroke-linecap="round" opacity=".16" filter="url(#gb)"/>
+      <path d="M-80,600 C80,400 270,200 680,-10"  stroke="#38bdf8" stroke-width="110" stroke-linecap="round" opacity=".14" filter="url(#gb)"/>
+      <path d="M-80,720 C150,510 350,310 680,90"  stroke="#c084fc" stroke-width="120" stroke-linecap="round" opacity=".15" filter="url(#gb)"/>
+      <path d="M30,670  C210,470 390,270 680,70"  stroke="#f472b6" stroke-width="90"  stroke-linecap="round" opacity=".12" filter="url(#gb)"/>
+      <path d="M-80,550 C100,360 290,170 680,-50" stroke="#a78bfa" stroke-width="100" stroke-linecap="round" opacity=".13" filter="url(#gb)"/>
+      <!-- medium glow -->
+      <path d="M-60,630 C110,440 296,244 660,50"  stroke="#818cf8" stroke-width="36" stroke-linecap="round" opacity=".2"  filter="url(#gm)"/>
+      <path d="M-60,586 C80,396 258,200 660,14"   stroke="#60a5fa" stroke-width="26" stroke-linecap="round" opacity=".18" filter="url(#gm)"/>
+      <path d="M-60,668 C120,476 312,278 660,84"  stroke="#c084fc" stroke-width="30" stroke-linecap="round" opacity=".2"  filter="url(#gm)"/>
+      <path d="M-60,522 C88,338 266,154 660,-18"  stroke="#e879f9" stroke-width="22" stroke-linecap="round" opacity=".16" filter="url(#gm)"/>
+      <!-- sharp thin lines -->
+      <path d="M-60,618 C100,428 280,234 660,44"  stroke="#818cf8" stroke-width="3"   stroke-linecap="round" opacity=".65"/>
+      <path d="M-60,574 C78,384 246,192 660,8"    stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+      <path d="M-60,650 C110,460 300,264 660,74"  stroke="#c084fc" stroke-width="3"   stroke-linecap="round" opacity=".62"/>
+      <path d="M-60,508 C84,324 258,142 660,-28"  stroke="#e879f9" stroke-width="2"   stroke-linecap="round" opacity=".5"/>
+      <path d="M-60,680 C118,490 308,294 660,104" stroke="#a78bfa" stroke-width="2"   stroke-linecap="round" opacity=".45"/>
+      <path d="M28,634  C168,448 330,256 660,66"  stroke="#7dd3fc" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+      <path d="M-60,542 C96,358 272,172 660,-8"   stroke="#f0abfc" stroke-width="2"   stroke-linecap="round" opacity=".42"/>
+      <path d="M72,602  C196,418 346,228 660,78"  stroke="#818cf8" stroke-width="1"   stroke-linecap="round" opacity=".3"/>
+      <path d="M-24,698 C128,508 308,318 660,128" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+      <!-- radial glow behind figure -->
+      <ellipse cx="310" cy="360" rx="170" ry="230" fill="#a78bfa" opacity=".07"/>
+      <ellipse cx="310" cy="330" rx="100" ry="160" fill="#818cf8" opacity=".06"/>
     </svg>
 
-    <!-- Stylised woman figure -->
-    <svg class="figure-svg" viewBox="0 0 240 460" fill="none" aria-hidden="true">
+    <!-- FIGURE -->
+    <svg class="fig" viewBox="0 0 280 530" fill="none">
       <!-- legs -->
-      <path d="M98,318 L82,448"  stroke="#eee8ff" stroke-width="34" stroke-linecap="round"/>
-      <path d="M142,318 L158,448" stroke="#eee8ff" stroke-width="34" stroke-linecap="round"/>
-      <!-- body (white jacket) -->
-      <path d="M72,156 C65,192 62,258 76,318 L164,318 C178,258 175,192 168,156 C154,140 86,140 72,156Z" fill="#f4f0ff"/>
-      <!-- jacket lapels -->
-      <path d="M110,156 L120,200 L130,156" stroke="#ddd6f8" stroke-width="2" fill="none"/>
-      <!-- crop top hint -->
-      <rect x="94" y="200" width="52" height="18" rx="4" fill="#e8e4f0"/>
+      <path d="M112,368 L94,520"  stroke="#ede9ff" stroke-width="40" stroke-linecap="round"/>
+      <path d="M168,368 L186,520" stroke="#ede9ff" stroke-width="40" stroke-linecap="round"/>
+      <!-- body white jacket -->
+      <path d="M82,178 C74,218 72,288 88,368 L192,368 C208,288 206,218 198,178 C182,158 98,158 82,178Z" fill="#f6f3ff"/>
+      <!-- jacket inner shadow -->
+      <path d="M82,178 C82,178 100,162 140,162 C180,162 198,178 198,178 L194,200 C180,188 100,188 86,200Z" fill="#eeeaff" opacity=".5"/>
+      <!-- lapels -->
+      <path d="M136,178 L144,236 L152,178" stroke="#e0d8f8" stroke-width="2" fill="none"/>
+      <!-- crop top -->
+      <rect x="116" y="236" width="48" height="22" rx="5" fill="#e8e4f4"/>
       <!-- belt -->
-      <rect x="68" y="236" width="104" height="16" rx="8" fill="#1a1828"/>
-      <rect x="110" y="239" width="20" height="10" rx="3" fill="#2d2844"/>
+      <rect x="80" y="276" width="120" height="18" rx="9" fill="#16142a"/>
+      <rect x="126" y="279" width="28" height="12" rx="4" fill="#28244a"/>
       <!-- neck -->
-      <rect x="107" y="118" width="26" height="28" rx="13" fill="#edcba8"/>
-      <!-- right arm raised up -->
-      <path d="M164,170 Q186,132 202,82" stroke="#edcba8" stroke-width="24" stroke-linecap="round"/>
-      <!-- robotic extension right -->
-      <path d="M202,82  Q212,50 208,14"  stroke="#9ba5c0" stroke-width="10" stroke-linecap="round"/>
-      <path d="M208,14  Q212,0  218,-12" stroke="#9ba5c0" stroke-width="7"  stroke-linecap="round"/>
-      <!-- phone in right hand -->
-      <g transform="rotate(-22 210 -20)">
-        <rect x="200" y="-32" width="22" height="36" rx="5" fill="#1e1b38"/>
-        <rect x="203" y="-29" width="16" height="26" rx="3" fill="#4c4980" opacity=".7"/>
-        <circle cx="211" cy="-16" r="6" fill="#a78bfa" opacity=".9"/>
-        <circle cx="211" cy="-16" r="3" fill="#c4b5fd"/>
+      <rect x="124" y="134" width="32" height="32" rx="16" fill="#edcba8"/>
+
+      <!-- RIGHT ARM raised -->
+      <path d="M192,200 Q218,154 236,100" stroke="#edcba8" stroke-width="28" stroke-linecap="round"/>
+      <!-- robotic right ext -->
+      <path d="M236,100 Q250,60 246,18"   stroke="#9eaabb" stroke-width="13" stroke-linecap="round"/>
+      <path d="M246,18  Q250,2  256,-14"  stroke="#9eaabb" stroke-width="9"  stroke-linecap="round"/>
+      <!-- phone -->
+      <g transform="rotate(-22 256 -20)">
+        <rect x="244" y="-42" width="26" height="40" rx="5" fill="#1a1730"/>
+        <rect x="247" y="-39" width="20" height="30" rx="3" fill="#42409a" opacity=".65"/>
+        <circle cx="257" cy="-24" r="8"   fill="#a78bfa" opacity=".9"/>
+        <circle cx="257" cy="-24" r="4"   fill="#c4b5fd"/>
+        <circle cx="260" cy="-38" r="1.5" fill="#555"/>
       </g>
-      <!-- left arm extended left -->
-      <path d="M76,174 Q46,188 12,182" stroke="#edcba8" stroke-width="22" stroke-linecap="round"/>
-      <!-- robotic extension left -->
-      <path d="M12,182 Q-12,178 -26,170" stroke="#9ba5c0" stroke-width="9" stroke-linecap="round"/>
-      <!-- laptop in left hand -->
-      <rect x="-58" y="158" width="40" height="28" rx="4" fill="#e8e8f4"/>
-      <rect x="-55" y="161" width="34" height="20" rx="2" fill="#3a3858"/>
-      <rect x="-62" y="186" width="48" height="5"  rx="2.5" fill="#cccce0"/>
-      <!-- head -->
-      <ellipse cx="120" cy="84" rx="36" ry="44" fill="#edcba8"/>
+
+      <!-- LEFT ARM extended -->
+      <path d="M88,200 Q54,216 16,210" stroke="#edcba8" stroke-width="26" stroke-linecap="round"/>
+      <!-- robotic left ext -->
+      <path d="M16,210 Q-12,206 -28,198" stroke="#9eaabb" stroke-width="11" stroke-linecap="round"/>
+      <!-- laptop -->
+      <rect x="-72" y="180" width="50" height="34" rx="5" fill="#eceaf6"/>
+      <rect x="-69" y="183" width="44" height="26" rx="3" fill="#2e2c52"/>
+      <rect x="-78" y="214" width="60" height="6"  rx="3" fill="#d0cee8"/>
+
+      <!-- extra arm bottom right (tablet) -->
+      <path d="M188,290 Q216,298 238,290" stroke="#9eaabb" stroke-width="11" stroke-linecap="round"/>
+      <rect x="234" y="272" width="36" height="50" rx="5" fill="#eceaf6"/>
+      <rect x="237" y="275" width="30" height="42" rx="3" fill="#2e2c52"/>
+      <rect x="250" y="310" width="4"  height="4"  rx="2" fill="#555"/>
+
+      <!-- HEAD -->
+      <ellipse cx="140" cy="96" rx="40" ry="48" fill="#edcba8"/>
       <!-- hair back -->
-      <path d="M84,78 Q86,30 120,28 Q154,30 156,78" fill="#c07038"/>
-      <!-- hair side strand -->
-      <path d="M84,78 Q80,90 83,106" stroke="#c07038" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <path d="M100,92 Q102,36 140,34 Q178,36 180,92" fill="#bf6e2e"/>
+      <!-- side strand -->
+      <path d="M100,92 Q95,108 98,128" stroke="#bf6e2e" stroke-width="18" stroke-linecap="round" fill="none"/>
       <!-- hair highlight -->
-      <path d="M96,36 Q112,28 128,33" stroke="#d4894a" stroke-width="4.5" stroke-linecap="round" fill="none" opacity=".5"/>
+      <path d="M118,42 Q138,34 160,40" stroke="#d4894a" stroke-width="5.5" stroke-linecap="round" fill="none" opacity=".45"/>
       <!-- headphones arc -->
-      <path d="M84,76 Q82,40 120,38 Q158,40 156,76" stroke="#2a2840" stroke-width="8" fill="none" stroke-linecap="round"/>
-      <!-- headphone cups -->
-      <rect x="75"  y="70" width="16" height="22" rx="8" fill="#2a2840"/>
-      <rect x="149" y="70" width="16" height="22" rx="8" fill="#2a2840"/>
+      <path d="M100,90 Q98,42 140,40 Q182,42 180,90" stroke="#26233c" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <!-- cups -->
+      <rect x="90"  y="83" width="18" height="26" rx="9" fill="#26233c"/>
+      <rect x="172" y="83" width="18" height="26" rx="9" fill="#26233c"/>
+      <!-- cup detail -->
+      <rect x="93"  y="87" width="12" height="18" rx="6" fill="#38345a"/>
+      <rect x="175" y="87" width="12" height="18" rx="6" fill="#38345a"/>
       <!-- eyes -->
-      <ellipse cx="107" cy="88" rx="4.5" ry="5" fill="#3d2b12"/>
-      <ellipse cx="133" cy="88" rx="4.5" ry="5" fill="#3d2b12"/>
-      <circle  cx="109" cy="86" r="1.5" fill="#fff" opacity=".6"/>
-      <circle  cx="135" cy="86" r="1.5" fill="#fff" opacity=".6"/>
+      <ellipse cx="126" cy="102" rx="5.5" ry="6"   fill="#3d2b12"/>
+      <ellipse cx="154" cy="102" rx="5.5" ry="6"   fill="#3d2b12"/>
+      <circle  cx="128" cy="99"  r="2"   fill="#fff" opacity=".5"/>
+      <circle  cx="156" cy="99"  r="2"   fill="#fff" opacity=".5"/>
+      <!-- eyebrows -->
+      <path d="M118,91 Q126,87 134,89" stroke="#5d3a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M146,89 Q154,87 162,91" stroke="#5d3a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- nose -->
+      <path d="M137,110 Q140,117 143,110" stroke="#c49a6c" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".5"/>
       <!-- smile -->
-      <path d="M110,102 Q120,110 130,102" stroke="#8b5e3c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      <!-- necklace hint -->
-      <path d="M108,138 Q120,146 132,138" stroke="#d4a96a" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
+      <path d="M126,122 Q140,132 154,122" stroke="#8b5e3c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- necklace -->
+      <path d="M124,156 Q140,165 156,156" stroke="#d4a96a" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
     </svg>
 
-    <!-- Floating tag 1: Визионер -->
-    <div class="hero-tag tag-1">
-      <div class="tag-icon tag-icon-blue">
+    <!-- TAG 1 -->
+    <div class="tag t1">
+      <div class="tic" style="background:#EEF2FF">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <circle cx="5" cy="5" r="2.5" fill="#6366F1"/>
+          <circle cx="5" cy="5"  r="2.5" fill="#6366F1"/>
           <circle cx="11" cy="5" r="2.5" fill="#6366F1"/>
           <circle cx="17" cy="5" r="2.5" fill="#6366F1"/>
           <circle cx="5" cy="11" r="2.5" fill="#6366F1" opacity=".5"/>
@@ -883,17 +330,14 @@
           <circle cx="17" cy="17" r="2.5" fill="#6366F1" opacity=".3"/>
         </svg>
       </div>
-      <div>
-        <div class="tag-label">Архетип</div>
-        <div class="tag-value">Визионер</div>
-      </div>
+      <div><div class="tlbl">Архетип</div><div class="tval">Визионер</div></div>
     </div>
 
-    <!-- Floating tag 2: Стратег -->
-    <div class="hero-tag tag-2">
-      <div class="tag-icon tag-icon-orange">
+    <!-- TAG 2 -->
+    <div class="tag t2">
+      <div class="tic" style="background:#FFF7ED">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <circle cx="5" cy="5" r="2.5" fill="#F97316"/>
+          <circle cx="5" cy="5"  r="2.5" fill="#F97316"/>
           <circle cx="11" cy="5" r="2.5" fill="#F97316" opacity=".6"/>
           <circle cx="17" cy="5" r="2.5" fill="#F97316" opacity=".3"/>
           <circle cx="5" cy="11" r="2.5" fill="#F97316" opacity=".6"/>
@@ -904,17 +348,14 @@
           <circle cx="17" cy="17" r="2.5" fill="#F97316"/>
         </svg>
       </div>
-      <div>
-        <div class="tag-label">Сильная роль</div>
-        <div class="tag-value">Стратег</div>
-      </div>
+      <div><div class="tlbl">Сильная роль</div><div class="tval">Стратег</div></div>
     </div>
 
-    <!-- Floating tag 3: Личный бренд + AI -->
-    <div class="hero-tag tag-3">
-      <div class="tag-icon tag-icon-purple">
+    <!-- TAG 3 -->
+    <div class="tag t3">
+      <div class="tic" style="background:#F5F3FF">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <circle cx="5" cy="5" r="2.5" fill="#A855F7" opacity=".4"/>
+          <circle cx="5" cy="5"  r="2.5" fill="#A855F7" opacity=".4"/>
           <circle cx="11" cy="5" r="2.5" fill="#A855F7"/>
           <circle cx="17" cy="5" r="2.5" fill="#A855F7" opacity=".4"/>
           <circle cx="5" cy="11" r="2.5" fill="#A855F7"/>
@@ -925,299 +366,197 @@
           <circle cx="17" cy="17" r="2.5" fill="#A855F7" opacity=".4"/>
         </svg>
       </div>
-      <div>
-        <div class="tag-label">Вектор</div>
-        <div class="tag-value">Личный бренд + AI</div>
-      </div>
+      <div><div class="tlbl">Вектор</div><div class="tval">Личный бренд + AI</div></div>
     </div>
 
-    <!-- Progress card -->
-    <div class="progress-card">
-      <div class="pc-header">
-        <span>Прогресс</span>
-        <span class="pc-count">2 / 24</span>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill"></div>
-      </div>
-      <div class="pc-time">~1 минута</div>
+    <!-- PROGRESS -->
+    <div class="prog">
+      <div class="prog-hd"><span>Прогресс</span><span>2 / 24</span></div>
+      <div class="ptrack"><div class="pfill"></div></div>
+      <div class="ptime">~1 минута</div>
     </div>
+
   </div>
 </section>
 
-<!-- ═══════════ STATS ═══════════ -->
-<section class="stats-section">
-  <div class="stat-item">
-    <div class="stat-icon">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B4FE8" stroke-width="2" stroke-linecap="round">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
+<!-- STATS -->
+<section class="stats">
+  <div class="stat">
+    <div class="sic" style="background:#EEEEFF">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5046E5" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
       </svg>
     </div>
-    <div class="stat-text">
-      <div class="stat-value">5 минут</div>
-      <div class="stat-label">на тест</div>
-    </div>
+    <div><div class="sv">2 минуты</div><div class="sl">на тест</div></div>
   </div>
-
-  <div class="stats-divider"></div>
-
-  <div class="stat-item stat-item--pad">
-    <div class="stat-icon" style="background:#FFF7ED;">
+  <div class="stat">
+    <div class="sic" style="background:#FFF7ED">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
       </svg>
     </div>
-    <div class="stat-text">
-      <div class="stat-value">58 000+</div>
-      <div class="stat-label">участников</div>
-    </div>
+    <div><div class="sv">58 000+</div><div class="sl">участников</div></div>
   </div>
-
-  <div class="stats-divider"></div>
-
-  <div class="stat-item stat-item--pad">
-    <div class="stat-icon" style="background:#F0FDF4;">
+  <div class="stat">
+    <div class="sic" style="background:#F0FDF4">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
     </div>
-    <div class="stat-text">
-      <div class="stat-value">Твой вектор</div>
-      <div class="stat-label">к роли</div>
-    </div>
+    <div><div class="sv">Твой вектор</div><div class="sl">к роли</div></div>
   </div>
-
-  <div class="stats-right">
-    <div class="testimonial">
-      <div class="quote">«Начни с кода. Действуй точнее.»</div>
-      <div class="author">— Мария К., продукт-менеджер</div>
-    </div>
-    <div class="counter-block">
-      <div class="big-num">58 742</div>
-      <div class="cnt-label">участника</div>
-    </div>
+  <div class="stats-r">
+    <div class="quote">«Начни с кода. Действуй точнее.»<cite>— Мария К., продукт-менеджер</cite></div>
+    <div class="ctr"><div class="ctr-n">58 742</div><div class="ctr-l">участника</div></div>
   </div>
 </section>
 
-<!-- ═══════════ RESULTS PREVIEW ═══════════ -->
-<section class="results-section">
+<!-- RESULTS -->
+<section class="results">
 
-  <!-- Archetypes row -->
-  <div class="results-row">
-    <div class="row-label">Твои бизнес-архетипы</div>
-    <div class="archetypes-list">
-
-      <div class="archetype-item">
-        <div class="arch-icon" style="background:#EEF2FF;">
+  <div class="rrow">
+    <div class="rlbl">Твои бизнес-архетипы</div>
+    <div class="archs">
+      <div class="arch">
+        <div class="aic" style="background:#EEF2FF">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="6" cy="6" r="2.2" fill="#6366F1"/>
-            <circle cx="12" cy="6" r="2.2" fill="#6366F1" opacity=".5"/>
-            <circle cx="18" cy="6" r="2.2" fill="#6366F1" opacity=".3"/>
-            <circle cx="6" cy="12" r="2.2" fill="#6366F1" opacity=".5"/>
-            <circle cx="12" cy="12" r="2.2" fill="#6366F1"/>
-            <circle cx="18" cy="12" r="2.2" fill="#6366F1" opacity=".5"/>
-            <circle cx="6" cy="18" r="2.2" fill="#6366F1" opacity=".3"/>
-            <circle cx="12" cy="18" r="2.2" fill="#6366F1" opacity=".5"/>
-            <circle cx="18" cy="18" r="2.2" fill="#6366F1" opacity=".3"/>
+            <circle cx="6" cy="6" r="2.2" fill="#6366F1"/><circle cx="12" cy="6" r="2.2" fill="#6366F1" opacity=".5"/><circle cx="18" cy="6" r="2.2" fill="#6366F1" opacity=".3"/>
+            <circle cx="6" cy="12" r="2.2" fill="#6366F1" opacity=".5"/><circle cx="12" cy="12" r="2.2" fill="#6366F1"/><circle cx="18" cy="12" r="2.2" fill="#6366F1" opacity=".5"/>
+            <circle cx="6" cy="18" r="2.2" fill="#6366F1" opacity=".3"/><circle cx="12" cy="18" r="2.2" fill="#6366F1" opacity=".5"/><circle cx="18" cy="18" r="2.2" fill="#6366F1" opacity=".3"/>
           </svg>
         </div>
-        <div class="arch-name">Исследователь</div>
-        <div class="arch-score">24/30</div>
+        <div class="an">Исследователь</div><div class="as">24/30</div>
       </div>
-
-      <div class="archetype-item">
-        <div class="arch-icon" style="background:#EFF6FF;">
+      <div class="arch">
+        <div class="aic" style="background:#EFF6FF">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="6" cy="6" r="2.2" fill="#3B82F6" opacity=".3"/>
-            <circle cx="12" cy="6" r="2.2" fill="#3B82F6"/>
-            <circle cx="18" cy="6" r="2.2" fill="#3B82F6" opacity=".3"/>
-            <circle cx="6" cy="12" r="2.2" fill="#3B82F6"/>
-            <circle cx="12" cy="12" r="2.2" fill="#3B82F6" opacity=".5"/>
-            <circle cx="18" cy="12" r="2.2" fill="#3B82F6"/>
-            <circle cx="6" cy="18" r="2.2" fill="#3B82F6" opacity=".3"/>
-            <circle cx="12" cy="18" r="2.2" fill="#3B82F6" opacity=".5"/>
-            <circle cx="18" cy="18" r="2.2" fill="#3B82F6" opacity=".3"/>
+            <circle cx="6" cy="6" r="2.2" fill="#3B82F6" opacity=".3"/><circle cx="12" cy="6" r="2.2" fill="#3B82F6"/><circle cx="18" cy="6" r="2.2" fill="#3B82F6" opacity=".3"/>
+            <circle cx="6" cy="12" r="2.2" fill="#3B82F6"/><circle cx="12" cy="12" r="2.2" fill="#3B82F6" opacity=".5"/><circle cx="18" cy="12" r="2.2" fill="#3B82F6"/>
+            <circle cx="6" cy="18" r="2.2" fill="#3B82F6" opacity=".3"/><circle cx="12" cy="18" r="2.2" fill="#3B82F6" opacity=".5"/><circle cx="18" cy="18" r="2.2" fill="#3B82F6" opacity=".3"/>
           </svg>
         </div>
-        <div class="arch-name">Новатор</div>
-        <div class="arch-score">24/30</div>
+        <div class="an">Новатор</div><div class="as">24/30</div>
       </div>
-
-      <div class="archetype-item">
-        <div class="arch-icon" style="background:#F5F3FF;">
+      <div class="arch">
+        <div class="aic" style="background:#F5F3FF">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="6" cy="6" r="2.2" fill="#8B5CF6" opacity=".4"/>
-            <circle cx="12" cy="6" r="2.2" fill="#8B5CF6"/>
-            <circle cx="18" cy="6" r="2.2" fill="#8B5CF6" opacity=".4"/>
-            <circle cx="6" cy="12" r="2.2" fill="#8B5CF6"/>
-            <circle cx="12" cy="12" r="2.2" fill="#8B5CF6" opacity=".6"/>
-            <circle cx="18" cy="12" r="2.2" fill="#8B5CF6"/>
-            <circle cx="6" cy="18" r="2.2" fill="#8B5CF6" opacity=".4"/>
-            <circle cx="12" cy="18" r="2.2" fill="#8B5CF6" opacity=".6"/>
-            <circle cx="18" cy="18" r="2.2" fill="#8B5CF6" opacity=".4"/>
+            <circle cx="6" cy="6" r="2.2" fill="#8B5CF6" opacity=".4"/><circle cx="12" cy="6" r="2.2" fill="#8B5CF6"/><circle cx="18" cy="6" r="2.2" fill="#8B5CF6" opacity=".4"/>
+            <circle cx="6" cy="12" r="2.2" fill="#8B5CF6"/><circle cx="12" cy="12" r="2.2" fill="#8B5CF6" opacity=".6"/><circle cx="18" cy="12" r="2.2" fill="#8B5CF6"/>
+            <circle cx="6" cy="18" r="2.2" fill="#8B5CF6" opacity=".4"/><circle cx="12" cy="18" r="2.2" fill="#8B5CF6" opacity=".6"/><circle cx="18" cy="18" r="2.2" fill="#8B5CF6" opacity=".4"/>
           </svg>
         </div>
-        <div class="arch-name">Визионер</div>
-        <div class="arch-score">23/30</div>
+        <div class="an">Визионер</div><div class="as">23/30</div>
       </div>
-
-      <div class="archetype-item">
-        <div class="arch-icon" style="background:#FFFBEB;">
+      <div class="arch">
+        <div class="aic" style="background:#FFFBEB">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="6" cy="6" r="2.2" fill="#F59E0B" opacity=".3"/>
-            <circle cx="12" cy="6" r="2.2" fill="#F59E0B" opacity=".7"/>
-            <circle cx="18" cy="6" r="2.2" fill="#F59E0B" opacity=".3"/>
-            <circle cx="6" cy="12" r="2.2" fill="#F59E0B" opacity=".7"/>
-            <circle cx="12" cy="12" r="2.2" fill="#F59E0B"/>
-            <circle cx="18" cy="12" r="2.2" fill="#F59E0B" opacity=".7"/>
-            <circle cx="6" cy="18" r="2.2" fill="#F59E0B" opacity=".3"/>
-            <circle cx="12" cy="18" r="2.2" fill="#F59E0B" opacity=".7"/>
-            <circle cx="18" cy="18" r="2.2" fill="#F59E0B" opacity=".3"/>
+            <circle cx="6" cy="6" r="2.2" fill="#F59E0B" opacity=".3"/><circle cx="12" cy="6" r="2.2" fill="#F59E0B" opacity=".7"/><circle cx="18" cy="6" r="2.2" fill="#F59E0B" opacity=".3"/>
+            <circle cx="6" cy="12" r="2.2" fill="#F59E0B" opacity=".7"/><circle cx="12" cy="12" r="2.2" fill="#F59E0B"/><circle cx="18" cy="12" r="2.2" fill="#F59E0B" opacity=".7"/>
+            <circle cx="6" cy="18" r="2.2" fill="#F59E0B" opacity=".3"/><circle cx="12" cy="18" r="2.2" fill="#F59E0B" opacity=".7"/><circle cx="18" cy="18" r="2.2" fill="#F59E0B" opacity=".3"/>
           </svg>
         </div>
-        <div class="arch-name">Стажер</div>
-        <div class="arch-score">23/30</div>
+        <div class="an">Стажер</div><div class="as">23/30</div>
       </div>
-
-      <div class="archetype-item">
-        <div class="arch-icon" style="background:#FFF7ED;">
+      <div class="arch">
+        <div class="aic" style="background:#FFF7ED">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="6" cy="6" r="2.2" fill="#F97316" opacity=".4"/>
-            <circle cx="12" cy="6" r="2.2" fill="#F97316"/>
-            <circle cx="18" cy="6" r="2.2" fill="#F97316" opacity=".4"/>
-            <circle cx="6" cy="12" r="2.2" fill="#F97316"/>
-            <circle cx="12" cy="12" r="2.2" fill="#F97316" opacity=".6"/>
-            <circle cx="18" cy="12" r="2.2" fill="#F97316"/>
-            <circle cx="6" cy="18" r="2.2" fill="#F97316" opacity=".4"/>
-            <circle cx="12" cy="18" r="2.2" fill="#F97316" opacity=".6"/>
-            <circle cx="18" cy="18" r="2.2" fill="#F97316" opacity=".4"/>
+            <circle cx="6" cy="6" r="2.2" fill="#F97316" opacity=".4"/><circle cx="12" cy="6" r="2.2" fill="#F97316"/><circle cx="18" cy="6" r="2.2" fill="#F97316" opacity=".4"/>
+            <circle cx="6" cy="12" r="2.2" fill="#F97316"/><circle cx="12" cy="12" r="2.2" fill="#F97316" opacity=".6"/><circle cx="18" cy="12" r="2.2" fill="#F97316"/>
+            <circle cx="6" cy="18" r="2.2" fill="#F97316" opacity=".4"/><circle cx="12" cy="18" r="2.2" fill="#F97316" opacity=".6"/><circle cx="18" cy="18" r="2.2" fill="#F97316" opacity=".4"/>
           </svg>
         </div>
-        <div class="arch-name">Эксперт</div>
-        <div class="arch-score">23/30</div>
+        <div class="an">Эксперт</div><div class="as">23/30</div>
       </div>
-
-      <button class="arch-nav">›</button>
+      <button class="anav">›</button>
     </div>
   </div>
 
-  <!-- Strategy row -->
-  <div class="results-row">
-    <div class="row-label">Стратегия: Лидерство</div>
-    <div class="strategy-list">
-
-      <div class="strategy-item">
-        <div class="strat-header">
-          <div class="strat-icon" style="background:#EEF2FF;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  <div class="rrow">
+    <div class="rlbl">Стратегия: Лидерство</div>
+    <div class="strats">
+      <div class="strat">
+        <div class="shd">
+          <div class="stic" style="background:#EEF2FF">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2.5" stroke-linecap="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
           </div>
-          <span class="strat-name">Лидерство</span>
+          <span class="stn">Лидерство</span>
         </div>
-        <div class="strat-score">69 / 90</div>
-        <div class="strat-bar-wrap">
-          <div class="strat-bar" style="width:77%;background:#6366F1;"></div>
-        </div>
+        <div class="sts">69 / 90</div>
+        <div class="bb"><div class="bf" style="width:77%;background:#6366F1"></div></div>
       </div>
-
-      <div class="strategy-item">
-        <div class="strat-header">
-          <div class="strat-icon" style="background:#FFF7ED;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2.5" stroke-linecap="round">
+      <div class="strat">
+        <div class="shd">
+          <div class="stic" style="background:#FFF7ED">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2.5" stroke-linecap="round">
               <circle cx="12" cy="12" r="3"/>
               <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
             </svg>
           </div>
-          <span class="strat-name">Коммуникация</span>
+          <span class="stn">Коммуникация</span>
         </div>
-        <div class="strat-score">67 / 90</div>
-        <div class="strat-bar-wrap">
-          <div class="strat-bar" style="width:74%;background:#F97316;"></div>
-        </div>
+        <div class="sts">67 / 90</div>
+        <div class="bb"><div class="bf" style="width:74%;background:#F97316"></div></div>
       </div>
-
-      <div class="strategy-item">
-        <div class="strat-header">
-          <div class="strat-icon" style="background:#F0FDF4;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round">
+      <div class="strat">
+        <div class="shd">
+          <div class="stic" style="background:#F0FDF4">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round">
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
             </svg>
           </div>
-          <span class="strat-name">Экспертность</span>
+          <span class="stn">Экспертность</span>
         </div>
-        <div class="strat-score">67 / 90</div>
-        <div class="strat-bar-wrap">
-          <div class="strat-bar" style="width:74%;background:#22C55E;"></div>
-        </div>
+        <div class="sts">67 / 90</div>
+        <div class="bb"><div class="bf" style="width:74%;background:#22C55E"></div></div>
       </div>
-
-      <div class="strategy-item">
-        <div class="strat-header">
-          <div class="strat-icon" style="background:#FFF1F2;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round">
-              <circle cx="12" cy="8" r="6"/>
-              <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+      <div class="strat">
+        <div class="shd">
+          <div class="stic" style="background:#FFF1F2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5" stroke-linecap="round">
+              <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
             </svg>
           </div>
-          <span class="strat-name">Мастерство</span>
+          <span class="stn">Мастерство</span>
         </div>
-        <div class="strat-score">64 / 90</div>
-        <div class="strat-bar-wrap">
-          <div class="strat-bar" style="width:71%;background:#EF4444;"></div>
-        </div>
+        <div class="sts">64 / 90</div>
+        <div class="bb"><div class="bf" style="width:71%;background:#EF4444"></div></div>
       </div>
-
     </div>
   </div>
 
-  <!-- Bug row -->
-  <div class="results-row">
-    <div class="row-label">Баг: Ненасытный</div>
-    <div class="bug-content">
-
-      <div class="bug-badge">
-        <div class="bug-icon">🎯</div>
-        <div>
-          <div class="bug-score">12 / 15</div>
-          <div class="bug-type">Активный баг</div>
-        </div>
+  <div class="rrow">
+    <div class="rlbl">Баг: Ненасытный</div>
+    <div class="bwrap">
+      <div class="bbadge">
+        <div class="bic">🎯</div>
+        <div><div class="bsc">12 / 15</div><div class="btp">Активный баг</div></div>
       </div>
-
-      <div class="bug-list">
-        <div class="bug-list-item"><span class="x">✕</span> Рассеянный фокус</div>
-        <div class="bug-list-item"><span class="x">✕</span> Перегрузка задач</div>
-        <div class="bug-list-item"><span class="x">✕</span> Усталость</div>
+      <div class="bitems">
+        <div class="bi"><span class="x">✕</span> Рассеянный фокус</div>
+        <div class="bi"><span class="x">✕</span> Перегрузка задач</div>
+        <div class="bi"><span class="x">✕</span> Усталость</div>
       </div>
-
-      <div class="superpower">
-        <div class="sp-label">✦ Суперсила</div>
-        <div class="sp-text">В фокусе —<br>неостановим.</div>
+      <div class="sp">
+        <div class="spl">✦ Суперсила</div>
+        <div class="spt">В фокусе —<br>неостановим.</div>
       </div>
-
     </div>
   </div>
 
 </section>
 
-<!-- ═══════════ BOTTOM CTA ═══════════ -->
-<div class="bottom-cta">
-  <div class="cta-title">Видишь контуры.<br>Пора в карту.</div>
-  <div class="cta-right">
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-t">Видишь контуры.<br>Пора в карту.</div>
+  <div class="cta-r">
     <button class="btn-cta">Получить отчёт <span>→</span></button>
-    <div class="cta-badges">
-      <span>Бесплатно</span>
-      <span>•</span>
-      <span>2 минуты</span>
-      <span>•</span>
+    <div class="cbadges">
+      <span>Бесплатно</span><span class="s">•</span>
+      <span>2 минуты</span><span class="s">•</span>
       <span>Без регистрации</span>
     </div>
   </div>
